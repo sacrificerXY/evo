@@ -2,11 +2,11 @@
 <CodeLite_Workspace Name="evo" Database="" Version="10000">
   <Project Name="evo" Path="evo/evo.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="no">
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="evo" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="evo" ConfigName="Release"/>
     </WorkspaceConfiguration>

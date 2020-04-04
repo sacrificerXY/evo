@@ -27,7 +27,7 @@ namespace neat
         Weights output_weights;
     };
 
-    // NeuralNetwork
     NeuralNetwork create_neural_network(const Genome& genome);
+    std::vector<float> eval(const NeuralNetwork& net, std::vector<float> inputs);
     std::string format(const NeuralNetwork& net);
 }

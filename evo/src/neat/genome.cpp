@@ -100,7 +100,7 @@ namespace neat
             const auto& link = genome.links[i];
             fmt::format_to(
                 back_inserter(links),
-                " {} {} ({} -> {}) w={}\n",
+                " {} {:>3} ({} -> {}) w={}\n",
                 link.enabled ? ' ' : '*', genome.linkIds[i], link.edge.in, link.edge.out, link.weight
             );
         }

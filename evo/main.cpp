@@ -62,6 +62,13 @@ int main()
         fmt::print(format_links(g3));
         auto net = neat::create_neural_network(g3);
         fmt::print("\n{}", format(net));
+        
+        auto output = eval(net, {1, 2, 3});
+        fmt::print("output: ");
+        for (auto o : output) {
+            fmt::print("{} ", o);
+        }
+        fmt::print("\n");
     }
 	return 0;
 }

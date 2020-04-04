@@ -2,9 +2,9 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Release
+## Debug
 ProjectName            :=evo
-ConfigurationName      :=Release
+ConfigurationName      :=Debug
 WorkspaceConfiguration := $(ConfigurationName)
 WorkspacePath          :=G:/projects/c++/workspace/evo
 ProjectPath            :=G:/projects/c++/workspace/evo/evo
@@ -29,7 +29,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=..\build-$(ConfigurationName)\bin\$(ProjectName)
-Preprocessors          :=$(PreprocessorSwitch)NDEBUG 
+Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
@@ -52,8 +52,8 @@ LibPath                := $(LibraryPathSwitch).
 AR       := G:/msys64/mingw64/bin/ar.exe rcu
 CXX      := G:/msys64/mingw64/bin/g++.exe
 CC       := G:/msys64/mingw64/bin/gcc.exe
-CXXFLAGS := -std=c++2a -Werror=return-type -O2 -Wall $(Preprocessors)
-CFLAGS   :=  -O2 -Wall $(Preprocessors)
+CXXFLAGS := -std=c++2a -Werror=return-type -g -O0 -Wall $(Preprocessors)
+CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := G:/msys64/mingw64/bin/as.exe
 
