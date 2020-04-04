@@ -1,0 +1,12 @@
+-IG:\msys64\mingw64\include\c++\9.3.0
+-IG:\msys64\mingw64\include\c++\9.3.0\x86_64-w64-mingw32
+-IG:\msys64\mingw64\include\c++\9.3.0\backward
+-IG:\msys64\mingw64\lib\gcc\x86_64-w64-mingw32\9.3.0\include
+-IG:\msys64\mingw64\include
+-IG:\msys64\mingw64\lib\gcc\x86_64-w64-mingw32\9.3.0\include-fixed
+-IG:\msys64\mingw64\x86_64-w64-mingw32\include
+-IG:\projects\c++\workspace\evo\evo
+-IG:\projects\c++\workspace\evo\evo\include
+-DNDEBUG
+-target
+x86_64-pc-windows-gnu
