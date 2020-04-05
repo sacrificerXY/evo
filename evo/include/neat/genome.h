@@ -37,6 +37,7 @@ namespace neat
         NodeIndex num_memory;
         NodeIndex num_enabled_links;
         std::vector<Node> nodes;
+        std::vector<NodeIndexs> dependencies;
         std::vector<LinkId> linkIds;
         std::vector<Link> links;
     };
@@ -45,6 +46,7 @@ namespace neat
     void mutate_add_link(Genome& genome, Edge edge, float weight);
     void mutate_split_link(Genome& genome, Edge edge);
     void mutate_add_memory(Genome& genome, Edge edge);
+    std::vector<Edge> get_available_links(const Genome& genome);
     std::vector<NodeIndex> get_output_node_indices(const Genome& genome);
     std::string format_nodes(const Genome& genome);
     std::string format_links(const Genome& genome);

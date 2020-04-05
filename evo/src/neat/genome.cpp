@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cassert>
 #include <numeric>
+#include <set>
 
 #include <fmt/core.h>
 
@@ -29,17 +30,21 @@ namespace neat
         linkIds.reserve(num_outputs);
 
         fmt::print("connect bias to outputs\n");
+        auto dependencies = decltype(Genome::dependencies)(size(nodes));
         for (NodeIndex out_index = num_inputs; out_index < num_inputs+num_outputs; ++out_index) {
             internal::add_link(linkIds, links, Edge{bias_index, out_index}, random_weight());
+            dependencies[out_index].push_back(bias_index);
         }
+        
 
-        return Genome{num_inputs, num_outputs, 0, 0, 0, nodes, linkIds, links};
+        return Genome{num_inputs, num_outputs, 0, 0, num_outputs, nodes, dependencies, linkIds, links};
     }
 
     void mutate_add_link(Genome& genome, Edge edge, float weight)
     {
         internal::add_link(genome.linkIds, genome.links, edge, weight);
         genome.num_enabled_links++;
+        genome.dependencies[edge.out].push_back(edge.in);
     }
 
     void mutate_split_link(Genome& genome, Edge edge)
@@ -62,11 +67,15 @@ namespace neat
         NodeIndex node_index = size(nodes);
         nodes.push_back({NodeType::HIDDEN});
         genome.num_hidden++;
+        genome.dependencies[node_index].push_back(bias_index);
 
         internal::add_link(genome.linkIds, links, Edge{bias_index, node_index}, random_weight());
         internal::add_link(genome.linkIds, links, Edge{edge.in, node_index}, 1);
         internal::add_link(genome.linkIds, links, Edge{node_index, edge.out}, link_it->weight);
         genome.num_enabled_links += 2; // 1 disabled + 3 enabled
+        genome.dependencies[node_index].push_back(bias_index);
+        genome.dependencies[node_index].push_back(edge.in);
+        genome.dependencies[edge.out].push_back(node_index);
     }
 
     void mutate_add_memory(Genome& genome, Edge edge)
@@ -79,10 +88,15 @@ namespace neat
         NodeIndex node_index = size(nodes);
         nodes.push_back({NodeType::MEMORY});
         genome.num_memory++;
+        genome.dependencies[node_index].push_back(bias_index);
         
         internal::add_link(genome.linkIds, links, Edge{bias_index, node_index}, random_weight());
         internal::add_link(genome.linkIds, links, Edge{edge.in, node_index}, random_weight());
         internal::add_link(genome.linkIds, links, Edge{node_index, edge.out}, random_weight());
+        genome.num_enabled_links += 3;
+        genome.dependencies[node_index].push_back(bias_index);
+        genome.dependencies[node_index].push_back(edge.in);
+        genome.dependencies[edge.out].push_back(node_index);
     }
 
     std::vector<NodeIndex> get_output_node_indices(const Genome& genome)
@@ -90,6 +104,43 @@ namespace neat
         std::vector<NodeIndex> indices(genome.num_outputs);
         std::iota(begin(indices), end(indices), genome.num_inputs);
         return indices;
+    }
+    
+    std::vector<Edge> get_available_links(const Genome& genome)
+    {
+        std::vector<Edge> edges;
+        for (NodeIndex from = 1; from < size(genome.nodes); ++from) {
+            std::set<NodeIndex> nodes;
+            const auto from_type = genome.nodes[from].type;
+            if (from_type == NodeType::OUTPUT) {
+                for (NodeIndex to = genome.num_inputs + genome.num_outputs; to < size(genome.nodes); ++to) {
+                    if (genome.nodes[to].type == NodeType::MEMORY) {
+                        nodes.insert(to);
+                    }
+                }
+            }
+            else { // i-h-m can connect to o-h-m
+                for (NodeIndex to = genome.num_inputs; to < size(genome.nodes); ++to) {
+                    if (from == to) continue; // self loop
+                    nodes.insert(to);
+                }
+            }
+            
+            for (const auto& link : genome.links) {
+                for (auto to : nodes) {
+                    // edge exists
+                    if (link.edge.in == from && link.edge.out == to) 
+                        nodes.erase(to);
+                    // a reverse edge exists
+                    else if (link.edge.in == to && link.edge.out == from)
+                        nodes.erase(to);
+                }
+            }
+            for (auto to : nodes) {
+                edges.push_back(Edge{from, to});
+            }
+        }
+        return edges;
     }
 
 
@@ -102,6 +153,7 @@ namespace neat
                 case NodeType::INPUT: type = "input"; break;
                 case NodeType::OUTPUT: type = "output"; break;
                 case NodeType::HIDDEN: type = "hidden"; break;
+                case NodeType::MEMORY: type = "memory"; break;
             }
             fmt::format_to(
                 back_inserter(nodes),
