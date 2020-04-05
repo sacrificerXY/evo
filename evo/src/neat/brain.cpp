@@ -159,8 +159,8 @@ namespace neat
         const auto num_outputs = brain.num_outputs;
         const auto num_memory = size(brain.memory_values);
         auto values = std::vector<float>(1, 1); // add bias
-        std::copy(begin(inputs), end(inputs), back_inserter(values)); // add inputs
-        std::copy(begin(brain.memory_values), end(brain.memory_values), back_inserter(values)); // add memory
+        values.insert(end(values), begin(inputs), end(inputs));
+        values.insert(end(values), begin(brain.memory_values), end(brain.memory_values));
 
         {
             auto n = brain.weights.front().node;
