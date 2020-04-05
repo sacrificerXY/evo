@@ -23,7 +23,7 @@ namespace neat
     struct Brain
     {
         // !!!!! use zero based indexing for each node type
-        NodeIndex num_inputs;
+        const NodeIndex num_outputs;
         Weights weights;
         std::vector<float> memory_values;
     };

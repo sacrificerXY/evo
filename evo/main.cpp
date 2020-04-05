@@ -63,7 +63,7 @@ int main()
         auto net = neat::create_brain(g3);
         fmt::print("\n{}", format(net));
         
-        //auto output = eval(net, {1, 2, 3});
+        auto output = eval(net, {1, 2, 3});
         //fmt::print("output: ");
         //for (auto o : output) {
         //    fmt::print("{} ", o);
