@@ -9,7 +9,7 @@
 namespace neat
 {
     using LinkId = std::uint16_t;
-    enum class NodeType { INPUT, OUTPUT, HIDDEN };
+    enum class NodeType { INPUT, OUTPUT, HIDDEN, MEMORY };
 
     struct Node
     {
@@ -33,6 +33,9 @@ namespace neat
     {
         const NodeIndex num_inputs;
         const NodeIndex num_outputs;
+        NodeIndex num_hidden;
+        NodeIndex num_memory;
+        NodeIndex num_enabled_links;
         std::vector<Node> nodes;
         std::vector<LinkId> linkIds;
         std::vector<Link> links;

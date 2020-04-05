@@ -14,7 +14,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Kyle
-Date                   :=04/04/2020
+Date                   :=05/04/2020
 CodeLitePath           :=G:/CodeLite
 LinkerName             :=G:/msys64/mingw64/bin/g++.exe
 SharedObjectLinkerName :=G:/msys64/mingw64/bin/g++.exe -shared -fPIC
@@ -62,7 +62,7 @@ AS       := G:/msys64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=G:\CodeLite
-Objects0=../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
+Objects0=../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
 
 
 
@@ -93,13 +93,13 @@ PreBuild:
 ##
 ## Objects
 ##
-../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(ObjectSuffix): src/neat/neural_network.cpp ../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/neural_network.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_neural_network.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(DependSuffix): src/neat/neural_network.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(DependSuffix) -MM src/neat/neural_network.cpp
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix): src/neat/brain.cpp ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/brain.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_brain.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix): src/neat/brain.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix) -MM src/neat/brain.cpp
 
-../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(PreprocessSuffix): src/neat/neural_network.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_neural_network.cpp$(PreprocessSuffix) src/neat/neural_network.cpp
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix): src/neat/brain.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix) src/neat/brain.cpp
 
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix): src/fmt/os.cc ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/os.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_os.cc$(ObjectSuffix) $(IncludePath)
@@ -109,13 +109,13 @@ PreBuild:
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(PreprocessSuffix): src/fmt/os.cc
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(PreprocessSuffix) src/fmt/os.cc
 
-../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix): src/neat/genome.cpp ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/genome.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_genome.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix): src/neat/genome.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix) -MM src/neat/genome.cpp
+../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix): src/neat/_internal.cpp ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/_internal.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat__internal.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix): src/neat/_internal.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix) -MM src/neat/_internal.cpp
 
-../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix): src/neat/genome.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix) src/neat/genome.cpp
+../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix): src/neat/_internal.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix) src/neat/_internal.cpp
 
 ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix): src/fmt/format.cc ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/format.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_format.cc$(ObjectSuffix) $(IncludePath)
@@ -125,13 +125,13 @@ PreBuild:
 ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix): src/fmt/format.cc
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix) src/fmt/format.cc
 
-../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix): src/neat/_internal.cpp ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/_internal.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat__internal.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix): src/neat/_internal.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix) -MM src/neat/_internal.cpp
+../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix): src/neat/genome.cpp ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/genome.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_genome.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix): src/neat/genome.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(DependSuffix) -MM src/neat/genome.cpp
 
-../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix): src/neat/_internal.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix) src/neat/_internal.cpp
+../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix): src/neat/genome.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix) src/neat/genome.cpp
 
 ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix): main.cpp ../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)

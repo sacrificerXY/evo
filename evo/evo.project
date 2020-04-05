@@ -7,8 +7,8 @@
   </Plugins>
   <VirtualDirectory Name="include">
     <VirtualDirectory Name="neat">
+      <File Name="include/neat/brain.h"/>
       <File Name="include/neat/common.h"/>
-      <File Name="include/neat/neural_network.h"/>
       <File Name="include/neat/genome.h"/>
       <File Name="include/neat/neat.h"/>
       <File Name="include/neat/_internal.h"/>
@@ -32,7 +32,7 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <VirtualDirectory Name="neat">
-      <File Name="src/neat/neural_network.cpp"/>
+      <File Name="src/neat/brain.cpp"/>
       <File Name="src/neat/genome.cpp"/>
       <File Name="src/neat/_internal.cpp"/>
     </VirtualDirectory>

@@ -33,12 +33,13 @@ namespace neat
             internal::add_link(linkIds, links, Edge{bias_index, out_index}, random_weight());
         }
 
-        return Genome{num_inputs, num_outputs, nodes, linkIds, links};
+        return Genome{num_inputs, num_outputs, 0, 0, 0, nodes, linkIds, links};
     }
 
     void mutate_add_link(Genome& genome, Edge edge, float weight)
     {
         internal::add_link(genome.linkIds, genome.links, edge, weight);
+        genome.num_enabled_links++;
     }
 
     void mutate_split_link(Genome& genome, Edge edge)
@@ -60,10 +61,12 @@ namespace neat
 
         NodeIndex node_index = size(nodes);
         nodes.push_back({NodeType::HIDDEN});
+        genome.num_hidden++;
 
         internal::add_link(genome.linkIds, links, Edge{bias_index, node_index}, random_weight());
         internal::add_link(genome.linkIds, links, Edge{edge.in, node_index}, 1);
         internal::add_link(genome.linkIds, links, Edge{node_index, edge.out}, link_it->weight);
+        genome.num_enabled_links += 2; // 1 disabled + 3 enabled
     }
 
     std::vector<NodeIndex> get_output_node_indices(const Genome& genome)
