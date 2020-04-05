@@ -29,6 +29,6 @@ namespace neat
     };
 
     Brain create_brain(const Genome& genome);
-    std::vector<float> eval(const Brain& net, std::vector<float> inputs);
+    std::vector<float> eval(Brain& net, std::vector<float> inputs);
     std::string format(const Brain& net);
 }

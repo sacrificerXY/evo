@@ -44,6 +44,7 @@ namespace neat
     Genome create_genome(NodeIndex num_inputs, NodeIndex num_outputs);
     void mutate_add_link(Genome& genome, Edge edge, float weight);
     void mutate_split_link(Genome& genome, Edge edge);
+    void mutate_add_memory(Genome& genome, Edge edge);
     std::vector<NodeIndex> get_output_node_indices(const Genome& genome);
     std::string format_nodes(const Genome& genome);
     std::string format_links(const Genome& genome);

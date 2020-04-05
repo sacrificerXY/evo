@@ -44,7 +44,7 @@ namespace neat::internal
     {
         assert(edge.in != edge.out);
         assert(not contains(links, edge));
-        assert(not contains(links, {edge.out, edge.in}));
+        //assert(not contains(links, {edge.out, edge.in}));
         fmt::print("add link ({} -> {}) w={}\n", edge.in, edge.out, weight);
 
         auto id_begin = cbegin(linkIds);

@@ -69,6 +69,22 @@ namespace neat
         genome.num_enabled_links += 2; // 1 disabled + 3 enabled
     }
 
+    void mutate_add_memory(Genome& genome, Edge edge)
+    {
+        auto& nodes = genome.nodes;
+        auto& links = genome.links;
+        assert(internal::contains(links, edge));
+        fmt::print("add memory ({} -> {})\n", edge.in, edge.out);
+        
+        NodeIndex node_index = size(nodes);
+        nodes.push_back({NodeType::MEMORY});
+        genome.num_memory++;
+        
+        internal::add_link(genome.linkIds, links, Edge{bias_index, node_index}, random_weight());
+        internal::add_link(genome.linkIds, links, Edge{edge.in, node_index}, random_weight());
+        internal::add_link(genome.linkIds, links, Edge{node_index, edge.out}, random_weight());
+    }
+
     std::vector<NodeIndex> get_output_node_indices(const Genome& genome)
     {
         std::vector<NodeIndex> indices(genome.num_outputs);

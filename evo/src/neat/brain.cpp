@@ -1,7 +1,6 @@
 #include "neat/brain.h"
 #include "neat/_internal.h"
 
-#include <algorithm>
 #include <cassert>
 #include <unordered_map>
 
@@ -111,6 +110,7 @@ namespace neat
         auto graph = DependencyGraph(num_hidden);
         auto hidden_weights = std::vector<Weights>(num_hidden);
         auto output_weights = std::vector<Weights>(num_outputs);
+        auto memory_weights = std::vector<Weights>(num_memory);
         for (const auto& link : genome.links) {
             if (!link.enabled) continue;
             const auto edge = link.edge;
@@ -127,6 +127,10 @@ namespace neat
                         graph[zero_edge.in].dependencies.push_back(zero_edge.out);
                     }
                     hidden_weights[zero_edge.out].push_back({node_map[edge.out], node_map[edge.in], link.weight});
+                    break;
+                }
+                case NodeType::MEMORY: {
+                    memory_weights[zero_edge.out].push_back({node_map[edge.out], node_map[edge.in], link.weight});
                     break;
                 }
                 default: assert(false);
@@ -150,11 +154,19 @@ namespace neat
                 make_move_iterator(end(w))
             );
         }
+        for (NodeIndex i = 0; i < num_memory; ++i) {
+            auto& w = memory_weights[i];
+            brain.weights.insert(
+                end(brain.weights),
+                make_move_iterator(begin(w)),
+                make_move_iterator(end(w))
+            );
+        }
 
         return brain;
     }
 
-    std::vector<float> eval(const Brain& brain, std::vector<float> inputs)
+    std::vector<float> eval(Brain& brain, std::vector<float> inputs)
     {
         const auto num_outputs = brain.num_outputs;
         const auto num_memory = size(brain.memory_values);
@@ -162,6 +174,11 @@ namespace neat
         values.insert(end(values), begin(inputs), end(inputs));
         values.insert(end(values), begin(brain.memory_values), end(brain.memory_values));
 
+        fmt::print("prevalues    \n");
+        for (NodeIndex i = 0; i < size(values); ++i) {
+            fmt::print("  {:<3} {:<5}\n", i, values[i]);
+        }
+        fmt::print("\n");
         {
             auto n = brain.weights.front().node;
             auto w = cbegin(brain.weights);
@@ -175,11 +192,13 @@ namespace neat
                 }
                 // activation
                 values.push_back(sum);
-                ++n;
+                n = w->node;
             }
         }
+        
+        brain.memory_values = std::vector(end(values) - num_memory, end(values));
 
-        fmt::print("values    ");
+        fmt::print("values    \n");
         for (NodeIndex i = 0; i < size(values); ++i) {
             fmt::print("  {:<3} {:<5}\n", i, values[i]);
         }
