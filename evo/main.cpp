@@ -4,16 +4,29 @@
 #include "Simulation.h"
 
 
+#include <effolkronium/random.hpp>
+// get base random alias which is auto seeded and has static API and internal state
+using Random = effolkronium::random_static;
 
 int main()
 {
-    Simulation sim(3, 2);
+    Simulation sim(10, 10);
     auto g = sim.create_genome();
-    fmt::print("{}\n", g.format());
-    g = sim.test_add_link(g, 2, 5);
-    fmt::print("{}\n", g.format());
-    g = sim.test_add_node(g, 2, 5);
-    fmt::print("{}\n", g.format());
+    for (int i = 0; i < 100; ++i) {
+        if (Random::get<bool>()) {
+            //fmt::print("** link **\n");
+            g = sim.mutate_add_link(g);
+        } else {
+            //fmt::print("** node **\n");
+            g = sim.mutate_add_node(g);
+            
+        }
+        fmt::print("{}\n", g.format());
+    }
+    //g = sim.test_add_link(g, 2, 5);
+    //fmt::print("{}\n", g.format());
+    //g = sim.test_add_node(g, 2, 5);
+    //fmt::print("{}\n", g.format());
     //g = sim.test_add_link(g, 3, 5);
     //fmt::print("{}\n", g.format());
     //auto i = g.add_hidden_node();

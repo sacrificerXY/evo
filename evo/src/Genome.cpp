@@ -104,8 +104,11 @@ std::string Genome::format() const
     fmt::format_to(back_inserter(out), "  -- conns {} ----\n", size(ids));
     for(NodeIndex i = 0; i < size(ids); ++i) {
         const auto e = enabled[i] ? ' ' : 'x';
+        if (!enabled[i]) continue;
+        if (links[i].from == BIAS_INDEX) continue;
         fmt::format_to(
-            back_inserter(out), "  {} {:<3} ({} -> {})  w = {}\n", e, ids[i], links[i].from, links[i].to, weights[i]);
+            //back_inserter(out), "  {} {:<3} ({} -> {})  w = {}\n", e, ids[i], links[i].from, links[i].to, weights[i]);
+            back_inserter(out), "{} -> {}\n", links[i].from, links[i].to);
     }
     return out;
 }

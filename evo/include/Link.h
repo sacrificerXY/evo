@@ -4,7 +4,6 @@
 #include <functional>
 
 #include "Node.h"
-#include <fmt/core.h>
 using LinkId = std::uint16_t;
 
 struct Link {
@@ -20,9 +19,7 @@ namespace std
 template <> struct hash<Link> {
     auto operator()(const Link& l) const
     {
-        const auto h =(std::hash<decltype(l.from)>{}(l.from) << 16) | std::hash<decltype(l.to)>{}(l.to);
-        fmt::print("HASH {} -> {} ---- {}\n", l.from, l.to, h);
-        return h;
+        return (std::hash<decltype(l.from)>{}(l.from) << 16) | std::hash<decltype(l.to)>{}(l.to);
     }
 };
 }

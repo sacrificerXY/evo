@@ -22,11 +22,13 @@ public:
     void add_connection(LinkId id, Link link, float weight, bool enabled);
     void disable_connection(LinkId id);
     NodeIndex add_hidden_node();
-    
+
     NodeType get_node_type(NodeIndex i) const;
     std::string format() const;
 
 private:
     NodeIndex num_hidden = 0;
     std::vector<LinkId> ids;
+
+    friend class Simulation;
 };
