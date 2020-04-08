@@ -6,7 +6,18 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <VirtualDirectory Name="effolkronium">
+      <File Name="include/effolkronium/random.hpp"/>
+    </VirtualDirectory>
+    <File Name="src/Simulation.cpp"/>
+    <File Name="src/Link.cpp"/>
+    <File Name="include/Link.h"/>
+    <File Name="include/Node.h"/>
+    <File Name="include/Brain.h"/>
+    <File Name="include/Genome.h"/>
+    <File Name="include/Simulation.h"/>
     <VirtualDirectory Name="neat">
+      <File Name="include/neat/mutator.h"/>
       <File Name="include/neat/brain.h"/>
       <File Name="include/neat/common.h"/>
       <File Name="include/neat/genome.h"/>
@@ -31,7 +42,9 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/Genome.cpp"/>
     <VirtualDirectory Name="neat">
+      <File Name="src/neat/mutator.cpp"/>
       <File Name="src/neat/brain.cpp"/>
       <File Name="src/neat/genome.cpp"/>
       <File Name="src/neat/_internal.cpp"/>

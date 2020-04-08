@@ -14,7 +14,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Kyle
-Date                   :=05/04/2020
+Date                   :=08/04/2020
 CodeLitePath           :=G:/CodeLite
 LinkerName             :=G:/msys64/mingw64/bin/g++.exe
 SharedObjectLinkerName :=G:/msys64/mingw64/bin/g++.exe -shared -fPIC
@@ -62,7 +62,8 @@ AS       := G:/msys64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=G:\CodeLite
-Objects0=../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
+Objects0=../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Link.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(ObjectSuffix) \
+	
 
 
 
@@ -93,14 +94,6 @@ PreBuild:
 ##
 ## Objects
 ##
-../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix): src/neat/brain.cpp ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/brain.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_brain.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix): src/neat/brain.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix) -MM src/neat/brain.cpp
-
-../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix): src/neat/brain.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix) src/neat/brain.cpp
-
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix): src/fmt/os.cc ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/os.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_os.cc$(ObjectSuffix) $(IncludePath)
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(DependSuffix): src/fmt/os.cc
@@ -109,6 +102,14 @@ PreBuild:
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(PreprocessSuffix): src/fmt/os.cc
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(PreprocessSuffix) src/fmt/os.cc
 
+../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(ObjectSuffix): src/neat/mutator.cpp ../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/mutator.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_mutator.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(DependSuffix): src/neat/mutator.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(DependSuffix) -MM src/neat/mutator.cpp
+
+../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(PreprocessSuffix): src/neat/mutator.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_mutator.cpp$(PreprocessSuffix) src/neat/mutator.cpp
+
 ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(ObjectSuffix): src/neat/_internal.cpp ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/_internal.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat__internal.cpp$(ObjectSuffix) $(IncludePath)
 ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(DependSuffix): src/neat/_internal.cpp
@@ -116,6 +117,46 @@ PreBuild:
 
 ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix): src/neat/_internal.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat__internal.cpp$(PreprocessSuffix) src/neat/_internal.cpp
+
+../build-$(ConfigurationName)/evo/src_Link.cpp$(ObjectSuffix): src/Link.cpp ../build-$(ConfigurationName)/evo/src_Link.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/Link.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Link.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_Link.cpp$(DependSuffix): src/Link.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_Link.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_Link.cpp$(DependSuffix) -MM src/Link.cpp
+
+../build-$(ConfigurationName)/evo/src_Link.cpp$(PreprocessSuffix): src/Link.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_Link.cpp$(PreprocessSuffix) src/Link.cpp
+
+../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix): src/Simulation.cpp ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/Simulation.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Simulation.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_Simulation.cpp$(DependSuffix): src/Simulation.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_Simulation.cpp$(DependSuffix) -MM src/Simulation.cpp
+
+../build-$(ConfigurationName)/evo/src_Simulation.cpp$(PreprocessSuffix): src/Simulation.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(PreprocessSuffix) src/Simulation.cpp
+
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix): src/neat/brain.cpp ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/neat/brain.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_neat_brain.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix): src/neat/brain.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(DependSuffix) -MM src/neat/brain.cpp
+
+../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix): src/neat/brain.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_brain.cpp$(PreprocessSuffix) src/neat/brain.cpp
+
+../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix): src/Genome.cpp ../build-$(ConfigurationName)/evo/src_Genome.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/Genome.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Genome.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_Genome.cpp$(DependSuffix): src/Genome.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_Genome.cpp$(DependSuffix) -MM src/Genome.cpp
+
+../build-$(ConfigurationName)/evo/src_Genome.cpp$(PreprocessSuffix): src/Genome.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(PreprocessSuffix) src/Genome.cpp
+
+../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix): main.cpp ../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix): main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix) -MM main.cpp
+
+../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix): main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix) main.cpp
 
 ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix): src/fmt/format.cc ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/format.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_format.cc$(ObjectSuffix) $(IncludePath)
@@ -132,14 +173,6 @@ PreBuild:
 
 ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix): src/neat/genome.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_neat_genome.cpp$(PreprocessSuffix) src/neat/genome.cpp
-
-../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix): main.cpp ../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/main.cpp$(DependSuffix) -MM main.cpp
-
-../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix): main.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix) main.cpp
 
 
 -include ../build-$(ConfigurationName)/evo//*$(DependSuffix)
