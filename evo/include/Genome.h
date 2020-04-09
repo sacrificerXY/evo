@@ -22,6 +22,7 @@ public:
     void add_connection(LinkId id, Link link, float weight, bool enabled);
     void disable_connection(LinkId id);
     NodeIndex add_hidden_node();
+    bool has_link(LinkId id) const;
 
     NodeType get_node_type(NodeIndex i) const;
     std::string format() const;

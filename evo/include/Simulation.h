@@ -15,10 +15,9 @@ public:
     Genome create_genome();
     Brain create_brain(const Genome& g) const;
     
-    Genome test_add_link(const Genome& g, NodeIndex from, NodeIndex to);
     Genome mutate_add_link(const Genome& g);
-    Genome test_add_node(const Genome& g, NodeIndex from, NodeIndex to);
     Genome mutate_add_node(const Genome& g);
+    Genome mutate_weight(const Genome& g);
 
 private:
     LinkId id_count = 0;

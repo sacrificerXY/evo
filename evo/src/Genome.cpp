@@ -5,21 +5,21 @@
 
 #include <fmt/core.h>
 
-Genome::Genome(NodeIndex num_inputs, NodeIndex num_outputs)
-    : num_inputs{ num_inputs }
-    , num_outputs{ num_outputs }
+Genome::Genome(NodeIndex num_inputs, NodeIndex num_outputs) : num_inputs{num_inputs}, num_outputs{num_outputs}
 {
+    // fmt::print("genome ctor\n");
 }
 
 Genome::Genome(const Genome& g)
-    : num_inputs{ g.num_inputs }
-    , num_outputs{ g.num_outputs }
-    , links{ g.links }
-    , weights{ g.weights }
-    , enabled{ g.enabled }
-    , num_hidden{ g.num_hidden }
-    , ids{ g.ids }
+    : num_inputs{g.num_inputs}
+    , num_outputs{g.num_outputs}
+    , links{g.links}
+    , weights{g.weights}
+    , enabled{g.enabled}
+    , num_hidden{g.num_hidden}
+    , ids{g.ids}
 {
+    // fmt::print("genome copy\n");
 }
 
 Genome& Genome::operator=(Genome&& g)
@@ -31,12 +31,17 @@ Genome& Genome::operator=(Genome&& g)
     links = std::move(g.links);
     weights = std::move(g.weights);
     enabled = std::move(g.enabled);
+    // ids = g.ids;
+    // links = g.links;
+    // weights = g.weights;
+    // enabled = g.enabled;
+    // fmt::print("genome move\n");
     return *this;
 }
 
 void Genome::add_connection(LinkId id, Link link, float weight, bool enabled)
 {
-    fmt::print("Genome::add_connection({}, ({} -> {}), {}, {})\n", id, link.from, link.to, weight, enabled);
+    //fmt::print("Genome::add_connection({}, ({} -> {}), {}, {})\n", id, link.from, link.to, weight, enabled);
 
     assert(get_node_type(link.from) != NodeType::OUTPUT);
     assert(get_node_type(link.to) != NodeType::INPUT);
@@ -62,7 +67,7 @@ void Genome::add_connection(LinkId id, Link link, float weight, bool enabled)
 }
 void Genome::disable_connection(LinkId id)
 {
-    fmt::print("Genome::disable_connection({})\n", id);
+    //fmt::print("Genome::disable_connection({})\n", id);
     assert(std::binary_search(std::cbegin(ids), std::cend(ids), id));
 
     const auto i = [& ids = this->ids, id]() {
@@ -74,15 +79,16 @@ void Genome::disable_connection(LinkId id)
     assert(ids[i] == id);
 
     enabled[i] = false;
-    fmt::print("  link {} ({} -> {}) w={}\n", id, links[i].from, links[i].to, weights[i]);
+    //fmt::print("  link {} ({} -> {}) w={}\n", id, links[i].from, links[i].to, weights[i]);
 }
 
 NodeIndex Genome::add_hidden_node()
 {
     assert(num_inputs + num_outputs + num_hidden + 1 < MAX_NODES);
+    //if (num_hidden >= 2) return;
     const auto i = num_inputs + num_outputs + num_hidden;
     num_hidden++;
-    fmt::print("Genome::add_hidden_node() -- {}\n", i);
+    //fmt::print("Genome::add_hidden_node() -- {}\n", i);
     return i;
 }
 
@@ -96,22 +102,26 @@ NodeType Genome::get_node_type(NodeIndex i) const
     return NodeType::HIDDEN;
 }
 
+bool Genome::has_link(LinkId id) const
+{
+    return std::binary_search(begin(ids), end(ids), id);
+}
+
 std::string Genome::format() const
 {
     std::string out = "---- genome ----\n";
-    fmt::format_to(
-        back_inserter(out), "  inputs = {}\n  outputs = {}\n  hidden = {}\n", num_inputs, num_outputs, num_hidden);
+    fmt::format_to(back_inserter(out), "  inputs = {}\n  outputs = {}\n  hidden = {}\n", num_inputs, num_outputs,
+                   num_hidden);
     fmt::format_to(back_inserter(out), "  -- conns {} ----\n", size(ids));
     for(NodeIndex i = 0; i < size(ids); ++i) {
         const auto e = enabled[i] ? ' ' : 'x';
         if(!enabled[i])
             continue;
-        if(links[i].from == BIAS_INDEX)
-            continue;
-        fmt::format_to(
-            // back_inserter(out), "  {} {:<3} ({} -> {})  w = {}\n", e, ids[i], links[i].from, links[i].to,
-            // weights[i]);
-            back_inserter(out), "{} -> {}\n", links[i].from, links[i].to);
+        // if(links[i].from == BIAS_INDEX)
+        //    continue;
+        fmt::format_to(back_inserter(out), "  {} {:<3} ({} -> {})  w = {}\n", e, ids[i], links[i].from, links[i].to,
+                       weights[i]);
+        // back_inserter(out), "{} -> {}\n", links[i].from, links[i].to);
     }
     return out;
 }

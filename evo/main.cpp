@@ -1,4 +1,9 @@
 
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <vector>
+
 #include <fmt/core.h>
 
 #include "Simulation.h"
@@ -8,26 +13,197 @@
 using Random = effolkronium::random_static;
 
 struct Unit {
-    float score;
     Genome genome;
+    Brain brain;
+    float score = 0.f;
 };
 
 int main()
 {
-    Simulation sim(4, 4);
-    auto g = sim.create_genome();
-    for(int i = 0; i < 50; ++i) {
-        if(Random::get<bool>()) {
-            // fmt::print("** link **\n");
-            g = sim.mutate_add_link(g);
-        } else {
-            // fmt::print("** node **\n");
-            g = sim.mutate_add_node(g);
-        }
-        // fmt::print("{}\n", g.format());
+    constexpr int epochs = 10000;
+    constexpr int pops = 50;
+    constexpr int top = pops / 2;
+    constexpr int rand_pops = 0;
+    constexpr int tests = 20;
+    Simulation sim(2, 1);
+
+    auto units = std::vector<Unit>();
+    for(int i = 0; i < pops + rand_pops; i++) {
+        auto g = sim.create_genome();
+        g = sim.mutate_add_link(g);
+        g = sim.mutate_add_link(g);
+        g = sim.mutate_add_link(g);
+        g = sim.mutate_add_link(g);
+        g = sim.mutate_add_link(g);
+        g = sim.mutate_add_link(g);
+        // fmt::print("PRE unit\n{}\n", g.format());
+        const auto b = sim.create_brain(g);
+        Unit u{g, b};
+        units.push_back(u);
+        // fmt::print("POST unit\n{}\n", units.back().genome.format());
     }
-    auto b = sim.create_brain(g);
-    fmt::print("{}\n", b.format());
+
+    // for (auto& u : units)
+    //    {
+    //        fmt::print("INITIAL unit\n{}\n", units.back().genome.format());
+    //    }
+    // return 0;
+    for(int epoch = 0; epoch < epochs; epoch++) {
+        // eval
+        for(auto& u : units) {
+            for(int t = 0; t < tests; t++) {
+                int i1 = Random::get<int>(0, 1);
+                int i2 = Random::get<int>(0, 1);
+                float out = (i1 == i2) ? -1 : 1;
+                auto out2 = u.brain.eval({i1, i2})[0];
+                if(out2 < 0)
+                    out2 = 0;
+                else if(out2 > 0)
+                    out2 = 1;
+                if((i1 ^ i2) == out2)
+                    u.score++;
+                else
+                    u.score--;
+                // u.score += (out - out2) * (out - out2);
+                // fmt::print("t {}{} = {:<4} -- {}\n", i1, i2, out, out2);
+            }
+            // fmt::print("\n");
+        }
+
+        // sort scores
+        std::partial_sort(begin(units), begin(units) + top, end(units),
+                          [](const auto& l, const auto& r) { return l.score > r.score; });
+
+        // fmt::print("\nSCORE -- {}\n", epoch);
+        // for(const auto& u : units) {
+        //    fmt::print("  s={:<10}\n", u.score);
+        //}
+        fmt::print("epoch {:<4} top= {:<20}", epoch, units.front().score);
+        for(int i = 0; i <= units.front().score; i++)
+            fmt::print("*");
+        fmt::print("\n");
+
+        // remove bottom scorers
+        units.erase(begin(units) + top, end(units));
+        assert(units.size() > 0);
+
+        // add offsprings
+        for(int i = 0; i < top; ++i) {
+            // fmt::print("PARENT\n{}\n", units[i].genome.format());
+            const auto& g = units[i].genome;
+            // mutate offspring
+            // Genome new_g =
+            // sim.mutate_add_link(units[i].genome);
+            auto r = Random::get(0.0f, 1.0f);
+
+            if(r < 0.8) {
+                // fmt::print("RANDOM weight\n");
+                Genome new_g = sim.mutate_weight(g);
+                units.push_back(Unit{new_g, sim.create_brain(new_g)});
+            } else {
+                if(Random::get(0.f, 1.f) < 0.5) {
+                    // fmt::print("RANDOM link\n");
+                    Genome new_g = sim.mutate_add_link(g);
+                    units.push_back(Unit{new_g, sim.create_brain(new_g)});
+                } else {
+                     //fmt::print("RANDOM node\n");
+                    Genome new_g = sim.mutate_add_node(g);
+                    units.push_back(Unit{new_g, sim.create_brain(new_g)});
+                }
+            }
+
+            //[&g,             //    if(r < 0.333333)
+            //        return sim.mutate_weight(g);
+            //    else
+            //    if(r < 0.666666)
+            //        return sim.mutate_add_link(g);
+            //    else
+            //        return sim.mutate_add_node(g);
+            //}();
+            // units.push_back(Unit{new_g, sim.create_brain(new_g)});
+            // fmt::print("CHILD\n{}\n\n", units[i].genome.format());
+            // assert(units[i].genome.format() == units.back().genome.format());
+            // fmt::print("new unit\n{}\n", units.back().genome.format());
+
+            // zero score
+            units[i].score = 0;
+            units[i].brain.reset_values();
+        }
+        // for (auto& u : units)
+        //{
+        //    fmt::print("new unit\n{}\n", units.back().genome.format());
+        //}
+        assert(size(units) == pops);
+
+        //
+    }
+
+    units.erase(begin(units) + top, end(units));
+    // test final
+    for(auto& u : units) {
+        for(int t = 0; t < tests; t++) {
+            int i1 = Random::get<int>(0, 1);
+            int i2 = Random::get<int>(0, 1);
+            float out = (i1 == i2) ? -1 : 1;
+            auto out2 = u.brain.eval({i1, i2})[0];
+            u.score += (out - out2) * (out - out2);
+            // fmt::print("t {}{} = {:<4} -- {}\n", i1, i2, out, out2);
+        }
+        // fmt::print("\n");
+    }
+    fmt::print("\nTEST\n");
+    for(const auto& u : units) {
+        // fmt::print("{}\n", u.genome.format());
+        fmt::print("{}\n", u.brain.format());
+        {
+            auto b = u.brain;
+            auto o = b.eval({0, 0})[0];
+            fmt::print("0 xor 0 = {}\n", o);
+        }
+        {
+            auto b = u.brain;
+            auto o = b.eval({1, 1})[0];
+            fmt::print("1 xor 1 = {}\n", o);
+        }
+        {
+            auto b = u.brain;
+            auto o = b.eval({0, 1})[0];
+            fmt::print("0 xor 1 = {}\n", o);
+        }
+        {
+            auto b = u.brain;
+            auto o = b.eval({1, 0})[0];
+            fmt::print("1 xor 0 = {}\n", o);
+        }
+        fmt::print("\n");
+    }
+    // auto g = sim.create_genome();
+    // for(int i = 0; i < 100; ++i) {
+    //    constexpr auto m = std::array{1, 2, 3};
+    //    switch(*Random::get(m)) {
+    //        case 1:
+    //            g = sim.mutate_add_link(g);
+    //            break;
+    //        case 2:
+    //            g = sim.mutate_add_node(g);
+    //            break;
+    //        case 3:
+    //            g = sim.mutate_weight(g);
+    //            break;
+    //        default:
+    //            assert(false);
+    //    }
+    //}
+    // auto b = sim.create_brain(g);
+    // fmt::print("{}\n", b.format());
+    // for(int i = 0; i < 100; ++i) {
+    //    auto output = b.eval({1, 1});
+    //    fmt::print("{}\n", b.format());
+    //    fmt::print("\n---- output {} ----\n", i);
+    //    for(auto o : output) {
+    //        fmt::print("  -- {}\n", o);
+    //    }
+    //}
     // g = sim.test_add_link(g, 2, 5);
     // fmt::print("{}\n", g.format());
     // g = sim.test_add_node(g, 2, 5);

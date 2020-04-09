@@ -12,9 +12,10 @@ public:
     NodeIndex num_outputs;
 
     Brain(NodeIndex num_inputs, NodeIndex num_outputs, NodeIndex num_hidden);
-    void add_link(NodeIndex from, NodeIndex to, NodeIndex weight);
-    void eval(std::vector<float> input) const;
+    void add_link(NodeIndex from, NodeIndex to, float weight);
+    std::vector<float> eval(std::vector<float> input);
     std::string format() const;
+    void reset_values();
 
 private:
     struct Link {
@@ -23,7 +24,7 @@ private:
         float weight;
     };
 
-    NodeIndex num_values;
+    int num_values;
     std::vector<Link> links;
     std::vector<float> past_values;
 };

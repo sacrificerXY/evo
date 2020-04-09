@@ -52,7 +52,7 @@ LibPath                := $(LibraryPathSwitch).
 AR       := G:/msys64/mingw64/bin/ar.exe rcu
 CXX      := G:/msys64/mingw64/bin/g++.exe
 CC       := G:/msys64/mingw64/bin/gcc.exe
-CXXFLAGS := -std=c++2a -Werror=return-type -g -O0 -Wall $(Preprocessors)
+CXXFLAGS := -std=c++2a -Werror=return-type  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := G:/msys64/mingw64/bin/as.exe
