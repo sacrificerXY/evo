@@ -3,77 +3,82 @@
 
 #include "Simulation.h"
 
-
 #include <effolkronium/random.hpp>
 // get base random alias which is auto seeded and has static API and internal state
 using Random = effolkronium::random_static;
 
+struct Unit {
+    float score;
+    Genome genome;
+};
+
 int main()
 {
-    Simulation sim(10, 10);
+    Simulation sim(4, 4);
     auto g = sim.create_genome();
-    for (int i = 0; i < 100; ++i) {
-        if (Random::get<bool>()) {
-            //fmt::print("** link **\n");
+    for(int i = 0; i < 50; ++i) {
+        if(Random::get<bool>()) {
+            // fmt::print("** link **\n");
             g = sim.mutate_add_link(g);
         } else {
-            //fmt::print("** node **\n");
+            // fmt::print("** node **\n");
             g = sim.mutate_add_node(g);
-            
         }
-        fmt::print("{}\n", g.format());
+        // fmt::print("{}\n", g.format());
     }
-    //g = sim.test_add_link(g, 2, 5);
-    //fmt::print("{}\n", g.format());
-    //g = sim.test_add_node(g, 2, 5);
-    //fmt::print("{}\n", g.format());
-    //g = sim.test_add_link(g, 3, 5);
-    //fmt::print("{}\n", g.format());
-    //auto i = g.add_hidden_node();
-    //fmt::print("   hidden {}\n", i);
-    
-    //g.add_connection(2, {1, 3}, 1, false);
-    //g.add_connection(2, {1, 2}, 1, false);
-    //g.add_connection(2, {1, 1}, 1, false);
-    //fmt::print("{}\n", g.format());
-    
-    //constexpr auto get_add = [] (neat::Genome& g) {
+    auto b = sim.create_brain(g);
+    fmt::print("{}\n", b.format());
+    // g = sim.test_add_link(g, 2, 5);
+    // fmt::print("{}\n", g.format());
+    // g = sim.test_add_node(g, 2, 5);
+    // fmt::print("{}\n", g.format());
+    // g = sim.test_add_link(g, 3, 5);
+    // fmt::print("{}\n", g.format());
+    // auto i = g.add_hidden_node();
+    // fmt::print("   hidden {}\n", i);
+
+    // g.add_connection(2, {1, 3}, 1, false);
+    // g.add_connection(2, {1, 2}, 1, false);
+    // g.add_connection(2, {1, 1}, 1, false);
+    // fmt::print("{}\n", g.format());
+
+    // constexpr auto get_add = [] (neat::Genome& g) {
     //    return [&g] (neat::NodeIndex in, neat::NodeIndex out) {
     //        mutate_add_link(g, {in, out}, 1);
     //    };
     //};
-    //constexpr auto get_split = [] (neat::Genome& g) {
+    // constexpr auto get_split = [] (neat::Genome& g) {
     //    return [&g] (neat::NodeIndex in, neat::NodeIndex out) {
     //        mutate_split_link(g, {in, out});
     //    };
     //};
-//    auto g1 = neat::create_genome(2, 1);
-//    {
-//        auto add = get_add(g1);
-//        auto split = get_split(g1);
-//        add(1, 3);
-//        split(1, 3);
-//        add(2, 4);
-//        split(2, 4);
-//        add(2, 3);
-//        split(2, 3);
-//        fmt::print(format_nodes(g1));
-//        fmt::print(format_links(g1));
-//    }
-//    fmt::print("\n");
-//    auto g2 = neat::create_genome(2, 1);
-//    {
-//        auto add = get_add(g2);
-//        auto split = get_split(g2);
-//        add(1, 3);
-//        add(2, 3);
-//        split(1, 3);
-//        split(2, 3);
-//        fmt::print(format_nodes(g2));
-//        fmt::print(format_links(g2));
-//        auto net = neat::create_neural_network(g2);
-//    }
-    //auto g3 = neat::create_genome(3, 2);
+    //    auto g1 = neat::create_genome(2, 1);
+    //    {
+    //        auto add = get_add(g1);
+    //        auto split = get_split(g1);
+    //        add(1, 3);
+    //        split(1, 3);
+    //        add(2, 4);
+    //        split(2, 4);
+    //        add(2, 3);
+    //        split(2, 3);
+    //        fmt::print(format_nodes(g1));
+    //        fmt::print(format_links(g1));
+    //    }
+    //    fmt::print("\n");
+    //    auto g2 = neat::create_genome(2, 1);
+    //    {
+    //        auto add = get_add(g2);
+    //        auto split = get_split(g2);
+    //        add(1, 3);
+    //        add(2, 3);
+    //        split(1, 3);
+    //        split(2, 3);
+    //        fmt::print(format_nodes(g2));
+    //        fmt::print(format_links(g2));
+    //        auto net = neat::create_neural_network(g2);
+    //    }
+    // auto g3 = neat::create_genome(3, 2);
     //{
     //    auto add = get_add(g3);
     //    auto split = get_split(g3);
@@ -94,7 +99,7 @@ int main()
     //    fmt::print("\n{}", format(net));
     //    auto output = eval(net, {1, 2, 3});
     //}
-    //auto g4 = neat::create_genome(2, 1);
+    // auto g4 = neat::create_genome(2, 1);
     //{
     //    auto add = get_add(g4);
     //    auto split = get_split(g4);
@@ -111,7 +116,7 @@ int main()
     //    auto output = eval(net, {1, 2});
     //    output = eval(net, {1, 2});
     //}
-    //auto g5 = neat::create_genome(3, 2);
+    // auto g5 = neat::create_genome(3, 2);
     //{
     //    auto add = get_add(g5);
     //    auto split = get_split(g5);
@@ -134,7 +139,6 @@ int main()
     //        fmt::print("  {} -> {}\n", edge.in, edge.out);
     //    }
     //}
-    
-    
-	return 0;
+
+    return 0;
 }

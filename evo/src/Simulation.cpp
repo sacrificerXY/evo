@@ -31,7 +31,6 @@ Genome Simulation::create_genome()
 }
 // Genome Simulation::mutate(const Genome& g) const;
 //
-// NeuralNetwork Simulation::create_brain(const Genome& g) const;
 
 Genome Simulation::test_add_link(const Genome& g, NodeIndex from, NodeIndex to)
 {
@@ -50,7 +49,6 @@ Genome Simulation::mutate_add_link(const Genome& g)
     if(from >= num_inputs) {
         fmt::print("  link HUMP\n");
         from += g.num_outputs;
-        
     }
     auto to = Random::get<NodeIndex>(g.num_inputs, g.num_inputs + g.num_outputs + g.num_hidden - 1);
     fmt::print("link {} -> {}\n", from, to);
@@ -120,6 +118,19 @@ Genome Simulation::mutate_add_node(const Genome& g)
     }
 
     return new_g;
+}
+
+Brain Simulation::create_brain(const Genome& g) const
+{
+    auto b = Brain(g.num_inputs, g.num_outputs, g.num_hidden);
+
+    for(NodeIndex i = 0; i < size(g.links); ++i) {
+        const auto link = g.links[i];
+        const auto weight = g.weights[i];
+        b.add_link(link.from, link.to, weight);
+    }
+
+    return b;
 }
 
 LinkId Simulation::get_id(Link link)
