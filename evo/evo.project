@@ -6,6 +6,11 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="include/neat_types.h"/>
+    <VirtualDirectory Name="doctest">
+      <File Name="include/doctest/doctest.h"/>
+    </VirtualDirectory>
+    <File Name="include/Id.h"/>
     <VirtualDirectory Name="effolkronium">
       <File Name="include/effolkronium/random.hpp"/>
     </VirtualDirectory>
@@ -14,14 +19,6 @@
     <File Name="include/Brain.h"/>
     <File Name="include/Genome.h"/>
     <File Name="include/Simulation.h"/>
-    <VirtualDirectory Name="neat">
-      <File Name="include/neat/mutator.h"/>
-      <File Name="include/neat/brain.h"/>
-      <File Name="include/neat/common.h"/>
-      <File Name="include/neat/genome.h"/>
-      <File Name="include/neat/neat.h"/>
-      <File Name="include/neat/_internal.h"/>
-    </VirtualDirectory>
     <VirtualDirectory Name="fmt">
       <File Name="include/fmt/ranges.h"/>
       <File Name="include/fmt/printf.h"/>
@@ -40,16 +37,11 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/neat_types.cpp"/>
     <File Name="src/Brain.cpp"/>
     <File Name="src/Simulation.cpp"/>
     <File Name="src/Link.cpp"/>
     <File Name="src/Genome.cpp"/>
-    <VirtualDirectory Name="neat">
-      <File Name="src/neat/mutator.cpp"/>
-      <File Name="src/neat/brain.cpp"/>
-      <File Name="src/neat/genome.cpp"/>
-      <File Name="src/neat/_internal.cpp"/>
-    </VirtualDirectory>
     <VirtualDirectory Name="fmt">
       <File Name="src/fmt/os.cc"/>
       <File Name="src/fmt/format.cc"/>

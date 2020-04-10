@@ -100,6 +100,7 @@ Brain Simulation::create_brain(const Genome& g) const
     auto b = Brain(g.num_inputs, g.num_outputs, g.num_hidden);
 
     for(NodeIndex i = 0; i < size(g.links); ++i) {
+        if (!g.enabled[i]) continue;
         const auto link = g.links[i];
         const auto weight = g.weights[i];
         b.add_link(link.from, link.to, weight);
