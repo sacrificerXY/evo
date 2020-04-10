@@ -39,13 +39,13 @@ TEST_CASE("create_genome")
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen);
     
-    REQUIRE(g.num_inputs == 3 + 1); // bias
-    REQUIRE(g.num_outputs == 2);
-    REQUIRE(g.num_hidden == 0);
-    REQUIRE(g.link_ids.size() == 2);
-    REQUIRE(g.links.size() == 2);
-    REQUIRE(has_link(g, gen(BIAS_INDEX, 4)));
-    REQUIRE(has_link(g, gen(BIAS_INDEX, 5)));
+    CHECK(g.num_inputs == 3 + 1); // bias
+    CHECK(g.num_outputs == 2);
+    CHECK(g.num_hidden == 0);
+    CHECK(g.link_ids.size() == 2);
+    CHECK(g.links.size() == 2);
+    CHECK(has_link(g, gen(BIAS_INDEX, 4)));
+    CHECK(has_link(g, gen(BIAS_INDEX, 5)));
 }
 
 
@@ -67,9 +67,11 @@ TEST_CASE("add_hidden_node")
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(1, 1, gen);
     auto index = add_hidden_node(g, gen);
-    REQUIRE(g.num_hidden == 1);
-    REQUIRE(index == 3);
-    REQUIRE(has_link(g, gen(BIAS_INDEX, index)));
+    CHECK(g.num_hidden == 1);
+    CHECK(index == 3);
+    CHECK(has_link(g, gen(BIAS_INDEX, index)));
+    CHECK(g.links.back().from == BIAS_INDEX);
+    CHECK(g.links.back().to == index);
 }
 
 void add_link(Genome& g, int id, const GenomeLink& link)
@@ -94,14 +96,14 @@ TEST_CASE("add_link")
     auto g = create_genome(3, 2, gen);
     
     auto id = gen(1, 4);
-    REQUIRE_FALSE(has_link(g, id));
+    CHECK_FALSE(has_link(g, id));
     add_link(g, id, GenomeLink{
         .from = 1,
         .to = 4
     });
-    REQUIRE(has_link(g, id));
-    REQUIRE(g.links.back().from == 1);
-    REQUIRE(g.links.back().to == 4);
+    CHECK(has_link(g, id));
+    CHECK(g.links.back().from == 1);
+    CHECK(g.links.back().to == 4);
 }
 
 
@@ -136,62 +138,62 @@ TEST_CASE("node query")
     SUBCASE("node_is_input")
     {
         // inputs
-        REQUIRE         (node_is_input(g, 0));
-        REQUIRE         (node_is_input(g, 1));
-        REQUIRE         (node_is_input(g, 2));
-        REQUIRE         (node_is_input(g, 3));
+        CHECK       (node_is_input(g, 0));
+        CHECK       (node_is_input(g, 1));
+        CHECK       (node_is_input(g, 2));
+        CHECK       (node_is_input(g, 3));
         // outputs
-        REQUIRE_FALSE   (node_is_input(g, 4));
-        REQUIRE_FALSE   (node_is_input(g, 5));
+        CHECK_FALSE (node_is_input(g, 4));
+        CHECK_FALSE (node_is_input(g, 5));
         // hidden
-        REQUIRE_FALSE   (node_is_input(g, 6));
-        REQUIRE_FALSE   (node_is_input(g, 7));
-        REQUIRE_FALSE   (node_is_input(g, 8));
+        CHECK_FALSE (node_is_input(g, 6));
+        CHECK_FALSE (node_is_input(g, 7));
+        CHECK_FALSE (node_is_input(g, 8));
     }
     SUBCASE("node_is_hidden")
     {
         // inputs
-        REQUIRE_FALSE   (node_is_hidden(g, 0));
-        REQUIRE_FALSE   (node_is_hidden(g, 1));
-        REQUIRE_FALSE   (node_is_hidden(g, 2));
-        REQUIRE_FALSE   (node_is_hidden(g, 3));
+        CHECK_FALSE (node_is_hidden(g, 0));
+        CHECK_FALSE (node_is_hidden(g, 1));
+        CHECK_FALSE (node_is_hidden(g, 2));
+        CHECK_FALSE (node_is_hidden(g, 3));
         // outputs
-        REQUIRE_FALSE   (node_is_hidden(g, 4));
-        REQUIRE_FALSE   (node_is_hidden(g, 5));
+        CHECK_FALSE (node_is_hidden(g, 4));
+        CHECK_FALSE (node_is_hidden(g, 5));
         // hidden
-        REQUIRE         (node_is_hidden(g, 6));
-        REQUIRE         (node_is_hidden(g, 7));
-        REQUIRE         (node_is_hidden(g, 8));
+        CHECK       (node_is_hidden(g, 6));
+        CHECK       (node_is_hidden(g, 7));
+        CHECK       (node_is_hidden(g, 8));
     }
     SUBCASE("node_is_output")
     {
         // inputs
-        REQUIRE_FALSE   (node_is_output(g, 0));
-        REQUIRE_FALSE   (node_is_output(g, 1));
-        REQUIRE_FALSE   (node_is_output(g, 2));
-        REQUIRE_FALSE   (node_is_output(g, 3));
+        CHECK_FALSE (node_is_output(g, 0));
+        CHECK_FALSE (node_is_output(g, 1));
+        CHECK_FALSE (node_is_output(g, 2));
+        CHECK_FALSE (node_is_output(g, 3));
         // outputs
-        REQUIRE         (node_is_output(g, 4));
-        REQUIRE         (node_is_output(g, 5));
+        CHECK       (node_is_output(g, 4));
+        CHECK       (node_is_output(g, 5));
         // hidden
-        REQUIRE_FALSE   (node_is_output(g, 6));
-        REQUIRE_FALSE   (node_is_output(g, 7));
-        REQUIRE_FALSE   (node_is_output(g, 8));
+        CHECK_FALSE (node_is_output(g, 6));
+        CHECK_FALSE (node_is_output(g, 7));
+        CHECK_FALSE (node_is_output(g, 8));
     }
     SUBCASE("node_is_valid")
     {
-        REQUIRE         (node_is_valid(g, 0));
-        REQUIRE         (node_is_valid(g, 1));
-        REQUIRE         (node_is_valid(g, 2));
-        REQUIRE         (node_is_valid(g, 3));
-        REQUIRE         (node_is_valid(g, 4));
-        REQUIRE         (node_is_valid(g, 5));
-        REQUIRE         (node_is_valid(g, 6));
-        REQUIRE         (node_is_valid(g, 7));
-        REQUIRE         (node_is_valid(g, 8));
+        CHECK       (node_is_valid(g, 0));
+        CHECK       (node_is_valid(g, 1));
+        CHECK       (node_is_valid(g, 2));
+        CHECK       (node_is_valid(g, 3));
+        CHECK       (node_is_valid(g, 4));
+        CHECK       (node_is_valid(g, 5));
+        CHECK       (node_is_valid(g, 6));
+        CHECK       (node_is_valid(g, 7));
+        CHECK       (node_is_valid(g, 8));
         
-        REQUIRE_FALSE   (node_is_valid(g, -1));
-        REQUIRE_FALSE   (node_is_valid(g, 9));
+        CHECK_FALSE (node_is_valid(g, -1));
+        CHECK_FALSE (node_is_valid(g, 9));
     }
 }
 
@@ -204,12 +206,38 @@ bool has_link(const Genome& g, int id)
 {
     return std::binary_search(g.link_ids.begin(), g.link_ids.end(), id);
 }
-//TEST_CASE("link query")
-//{
-//    auto gen = GenomeLinkIdGenerator{};
-//    auto g = create_genome(3, 2);
-//    auto h1 = add_hidden_node(g);
-//    auto h2 = add_hidden_node(g);
-//    auto h2 = add_hidden_node(g);
-//    REQUIRE_FALSE(has_link(g, gen(
-//}
+
+TEST_CASE("link query")
+{
+    auto gen = GenomeLinkIdGenerator{};
+    auto g = create_genome(1, 1, gen);
+    auto i = 1;
+    auto o = 2;
+    auto h1 = add_hidden_node(g, gen);
+    auto h2 = add_hidden_node(g, gen);
+    SUBCASE("link_is_valid")
+    {
+        CHECK(link_is_valid(g, i, o));
+        CHECK(link_is_valid(g, i, h1));
+        CHECK(link_is_valid(g, h2, o));
+        CHECK(link_is_valid(g, h1, h2));
+        CHECK(link_is_valid(g, h1, h1)); // self loops
+        
+        CHECK_FALSE(link_is_valid(g, o, i));
+        CHECK_FALSE(link_is_valid(g, o, h1));
+        CHECK_FALSE(link_is_valid(g, h2, i));
+        CHECK_FALSE(link_is_valid(g, i, i)); // self loops
+        CHECK_FALSE(link_is_valid(g, o, o)); // self loops
+    }
+    SUBCASE("has_link")
+    {
+        CHECK(has_link(g, gen(BIAS_INDEX, o)));
+        
+        auto id = gen(i, o);
+        
+        CHECK_FALSE(has_link(g, id));
+        
+        add_link(g, id, {i, o});
+        CHECK(has_link(g, id));
+    }
+}
