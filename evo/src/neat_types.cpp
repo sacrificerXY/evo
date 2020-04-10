@@ -6,13 +6,6 @@
 
 #include "Id.h"
 
-
-#define REQUIRE_VALID_NODE(g, i)\
-{\
-REQUIRE(i >= 0);\
-REQUIRE(i < g.num_inputs + g.num_outputs + g.num_hidden);\
-}
-
 constexpr int BIAS_INDEX = 0;
 
 Genome create_genome(const int num_inputs_, const int num_outputs_, GenomeLinkIdGenerator& gen_id)
@@ -75,35 +68,50 @@ void add_link(Genome& g, int id, const GenomeLink& link)
 {
     REQUIRE_FALSE(has_link(g, id));
     
-    auto it = std::lower_bound(g.link_ids.begin(), g.link_ids.end(), id);
-    if (it == g.link_ids.end()) {
+    const auto id_insertion_point = std::lower_bound(g.link_ids.begin(), g.link_ids.end(), id);
+    if (id_insertion_point == g.link_ids.end()) {
         g.link_ids.push_back(id);
         g.links.push_back(link);
     }
-    //REQUIRE_VALID_NODE(g, from);
-    //REQUIRE_VALID_NODE(g, to);
-    //const auto id = get_id(from, to);
-    //REQUIRE(
+    else {
+        const auto link_insertion_point = g.links.begin() + std::distance(g.link_ids.begin(), id_insertion_point);
+        g.link_ids.insert(id_insertion_point, id);
+        g.links.insert(link_insertion_point, link);
+    }
+}
+
+TEST_CASE("add_link")
+{
+    auto gen = GenomeLinkIdGenerator{};
+    auto g = create_genome(3, 2, gen);
+    auto last_link_id = g.link_ids.back();
+    REQUIRE(last_link_id == gen(BIAS_INDEX, 5));
+    
+    //add_link(g, gen(
 }
 
 
 
-bool is_node_input(const Genome& g, int i)
+bool node_is_input(const Genome& g, int i)
 {
-    REQUIRE_VALID_NODE(g, i);
+    REQUIRE(node_is_valid(g, i));
     return i < g.num_inputs;
 }
-bool is_node_hidden(const Genome& g, int i)
+bool node_is_hidden(const Genome& g, int i)
 {
-    REQUIRE_VALID_NODE(g, i);
+    REQUIRE(node_is_valid(g, i));
     return i >= g.num_inputs + g.num_outputs;
 }
-bool is_node_output(const Genome& g, int i)
+bool node_is_output(const Genome& g, int i)
 {
-    REQUIRE_VALID_NODE(g, i);
+    REQUIRE(node_is_valid(g, i));
     return g.num_inputs <= i && i < g.num_inputs + g.num_outputs;
 }
-TEST_CASE("is_node checkers")
+bool node_is_valid(const Genome& g, int i)
+{
+    return 0 <= i && i < g.num_inputs + g.num_outputs + g.num_hidden;
+}
+TEST_CASE("node_is checkers")
 {
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen);
@@ -111,54 +119,73 @@ TEST_CASE("is_node checkers")
     add_hidden_node(g); // 7
     add_hidden_node(g); // 8
     
-    SUBCASE("is_node_input")
+    SUBCASE("node_is_input")
     {
         // inputs
-        REQUIRE         (is_node_input(g, 0));
-        REQUIRE         (is_node_input(g, 1));
-        REQUIRE         (is_node_input(g, 2));
-        REQUIRE         (is_node_input(g, 3));
+        REQUIRE         (node_is_input(g, 0));
+        REQUIRE         (node_is_input(g, 1));
+        REQUIRE         (node_is_input(g, 2));
+        REQUIRE         (node_is_input(g, 3));
         // outputs
-        REQUIRE_FALSE   (is_node_input(g, 4));
-        REQUIRE_FALSE   (is_node_input(g, 5));
+        REQUIRE_FALSE   (node_is_input(g, 4));
+        REQUIRE_FALSE   (node_is_input(g, 5));
         // hidden
-        REQUIRE_FALSE   (is_node_input(g, 6));
-        REQUIRE_FALSE   (is_node_input(g, 7));
-        REQUIRE_FALSE   (is_node_input(g, 8));
+        REQUIRE_FALSE   (node_is_input(g, 6));
+        REQUIRE_FALSE   (node_is_input(g, 7));
+        REQUIRE_FALSE   (node_is_input(g, 8));
     }
-    SUBCASE("is_node_hidden")
+    SUBCASE("node_is_hidden")
     {
         // inputs
-        REQUIRE_FALSE   (is_node_hidden(g, 0));
-        REQUIRE_FALSE   (is_node_hidden(g, 1));
-        REQUIRE_FALSE   (is_node_hidden(g, 2));
-        REQUIRE_FALSE   (is_node_hidden(g, 3));
+        REQUIRE_FALSE   (node_is_hidden(g, 0));
+        REQUIRE_FALSE   (node_is_hidden(g, 1));
+        REQUIRE_FALSE   (node_is_hidden(g, 2));
+        REQUIRE_FALSE   (node_is_hidden(g, 3));
         // outputs
-        REQUIRE_FALSE   (is_node_hidden(g, 4));
-        REQUIRE_FALSE   (is_node_hidden(g, 5));
+        REQUIRE_FALSE   (node_is_hidden(g, 4));
+        REQUIRE_FALSE   (node_is_hidden(g, 5));
         // hidden
-        REQUIRE         (is_node_hidden(g, 6));
-        REQUIRE         (is_node_hidden(g, 7));
-        REQUIRE         (is_node_hidden(g, 8));
+        REQUIRE         (node_is_hidden(g, 6));
+        REQUIRE         (node_is_hidden(g, 7));
+        REQUIRE         (node_is_hidden(g, 8));
     }
-    SUBCASE("is_node_output")
+    SUBCASE("node_is_output")
     {
         // inputs
-        REQUIRE_FALSE   (is_node_output(g, 0));
-        REQUIRE_FALSE   (is_node_output(g, 1));
-        REQUIRE_FALSE   (is_node_output(g, 2));
-        REQUIRE_FALSE   (is_node_output(g, 3));
+        REQUIRE_FALSE   (node_is_output(g, 0));
+        REQUIRE_FALSE   (node_is_output(g, 1));
+        REQUIRE_FALSE   (node_is_output(g, 2));
+        REQUIRE_FALSE   (node_is_output(g, 3));
         // outputs
-        REQUIRE         (is_node_output(g, 4));
-        REQUIRE         (is_node_output(g, 5));
+        REQUIRE         (node_is_output(g, 4));
+        REQUIRE         (node_is_output(g, 5));
         // hidden
-        REQUIRE_FALSE   (is_node_output(g, 6));
-        REQUIRE_FALSE   (is_node_output(g, 7));
-        REQUIRE_FALSE   (is_node_output(g, 8));
+        REQUIRE_FALSE   (node_is_output(g, 6));
+        REQUIRE_FALSE   (node_is_output(g, 7));
+        REQUIRE_FALSE   (node_is_output(g, 8));
+    }
+    SUBCASE("node_is_valid")
+    {
+        REQUIRE         (node_is_valid(g, 0));
+        REQUIRE         (node_is_valid(g, 1));
+        REQUIRE         (node_is_valid(g, 2));
+        REQUIRE         (node_is_valid(g, 3));
+        REQUIRE         (node_is_valid(g, 4));
+        REQUIRE         (node_is_valid(g, 5));
+        REQUIRE         (node_is_valid(g, 6));
+        REQUIRE         (node_is_valid(g, 7));
+        REQUIRE         (node_is_valid(g, 8));
+        
+        REQUIRE_FALSE   (node_is_valid(g, -1));
+        REQUIRE_FALSE   (node_is_valid(g, 9));
     }
 }
 
 
+bool link_is_valid(const Genome& g, int from, int to)
+{
+    return !(node_is_output(from) || node_is_input(to));
+}
 
 bool has_link(const Genome& g, int id)
 {
