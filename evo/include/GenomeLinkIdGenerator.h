@@ -25,8 +25,8 @@ namespace std
 class GenomeLinkIdGenerator
 {
 public:
-    int operator()(int from, int to);
+    int operator()(int from, int to) const;
 private:
-    std::unordered_map<int, std::unordered_map<int, int>> _links;
-    int _count = 0;
+    mutable std::unordered_map<int, std::unordered_map<int, int>> _links;
+    mutable int _count = 0;
 };

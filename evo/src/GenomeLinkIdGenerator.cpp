@@ -2,7 +2,7 @@
 
 #include <doctest/doctest.h>
 
-int GenomeLinkIdGenerator::operator()(int from, int to)
+int GenomeLinkIdGenerator::operator()(int from, int to) const
 {
     REQUIRE(from >= 0);
     REQUIRE(to >= 0);
