@@ -29,7 +29,7 @@ using Random = effolkronium::random_static;
 
 int prog_main()
 {
-    create_genome(1, 1);
+    //create_genome(1, 1);
     //constexpr int epochs = 1000;
     //constexpr int pops = 200;
     //constexpr int top = pops / 2;
