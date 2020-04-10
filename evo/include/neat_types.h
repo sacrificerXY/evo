@@ -22,7 +22,7 @@ struct Genome {
 };
 
 Genome create_genome(int num_inputs, int num_outputs, GenomeLinkIdGenerator& gen_id);
-int add_hidden_node(Genome& g);
+int add_hidden_node(Genome& g, GenomeLinkIdGenerator& gen_id);
 void add_link(Genome& g, int id, const GenomeLink& link);
 
 bool node_is_input(const Genome& g, int i);

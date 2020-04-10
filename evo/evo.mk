@@ -62,7 +62,7 @@ AS       := G:/msys64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=G:\CodeLite
-Objects0=../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_types.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Link.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) 
+Objects0=../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_neat_types.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Link.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
 
 
 
@@ -93,13 +93,13 @@ PreBuild:
 ##
 ## Objects
 ##
-../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix): src/GenomeLinkIdGenerator.cpp ../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/GenomeLinkIdGenerator.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix): src/GenomeLinkIdGenerator.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix) -MM src/GenomeLinkIdGenerator.cpp
+../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix): src/fmt/format.cc ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/format.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_format.cc$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix): src/fmt/format.cc
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix) -MM src/fmt/format.cc
 
-../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(PreprocessSuffix): src/GenomeLinkIdGenerator.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(PreprocessSuffix) src/GenomeLinkIdGenerator.cpp
+../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix): src/fmt/format.cc
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix) src/fmt/format.cc
 
 ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix): src/fmt/os.cc ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/os.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_os.cc$(ObjectSuffix) $(IncludePath)
@@ -124,6 +124,14 @@ PreBuild:
 
 ../build-$(ConfigurationName)/evo/src_Link.cpp$(PreprocessSuffix): src/Link.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_Link.cpp$(PreprocessSuffix) src/Link.cpp
+
+../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix): src/GenomeLinkIdGenerator.cpp ../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/GenomeLinkIdGenerator.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix): src/GenomeLinkIdGenerator.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(DependSuffix) -MM src/GenomeLinkIdGenerator.cpp
+
+../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(PreprocessSuffix): src/GenomeLinkIdGenerator.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_GenomeLinkIdGenerator.cpp$(PreprocessSuffix) src/GenomeLinkIdGenerator.cpp
 
 ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(ObjectSuffix): src/Simulation.cpp ../build-$(ConfigurationName)/evo/src_Simulation.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/Simulation.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Simulation.cpp$(ObjectSuffix) $(IncludePath)
@@ -156,14 +164,6 @@ PreBuild:
 
 ../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/main.cpp$(PreprocessSuffix) main.cpp
-
-../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix): src/fmt/format.cc ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/format.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_format.cc$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix): src/fmt/format.cc
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix) -MM src/fmt/format.cc
-
-../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix): src/fmt/format.cc
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(PreprocessSuffix) src/fmt/format.cc
 
 
 -include ../build-$(ConfigurationName)/evo//*$(DependSuffix)
