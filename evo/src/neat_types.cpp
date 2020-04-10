@@ -9,7 +9,9 @@
 
 constexpr int BIAS_INDEX = 0;
 
-Genome create_genome(const int num_inputs_, const int num_outputs_, const GenomeLinkIdGenerator& gen_id)
+Genome create_genome(const int num_inputs_, const int num_outputs_, 
+    const GenomeLinkIdGenerator& gen_id,
+    const std::function<float(void)>& gen_weight = [](){ return 0.0f; })
 {
     REQUIRE(num_inputs_ > 0);
     REQUIRE(num_outputs_ > 0);
@@ -27,7 +29,7 @@ Genome create_genome(const int num_inputs_, const int num_outputs_, const Genome
             GenomeLink{
                 .from = BIAS_INDEX,
                 .to = i,
-                .weight = 1,//rand
+                .weight = gen_weight(),//rand
                 .enabled = true
         });
     }
@@ -50,14 +52,15 @@ TEST_CASE("create_genome")
 }
 
 
-int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id)
+int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id,
+    const std::function<float(void)>& gen_weight = [](){ return 0.0f; })
 {
     int i = g.num_inputs + g.num_outputs + g.num_hidden++;
     add_link(g, gen_id(BIAS_INDEX, i),
         GenomeLink{
             .from = BIAS_INDEX,
             .to = i,
-            .weight = 2,
+            .weight = gen_weight(),
             .enabled = true
     });
     return i;

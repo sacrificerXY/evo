@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 #include "GenomeLinkIdGenerator.h"
 
@@ -21,8 +22,11 @@ struct Genome {
     std::vector<GenomeLink> links;
 };
 
-Genome create_genome(int num_inputs, int num_outputs, const GenomeLinkIdGenerator& gen_id);
-int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id);
+Genome create_genome(int num_inputs, int num_outputs, 
+    const GenomeLinkIdGenerator& gen_id, 
+    const std::function<float(void)>& gen_weight);
+    
+int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id, const std::function<float(void)>& gen_weight);
 void add_link(Genome& g, int id, const GenomeLink& link);
 bool node_is_input(const Genome& g, int i);
 bool node_is_hidden(const Genome& g, int i);
