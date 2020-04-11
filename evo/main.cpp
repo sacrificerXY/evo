@@ -25,7 +25,7 @@ using Random = effolkronium::random_static;
 //    float score = 0.f;
 //};
 
-#include "neat_types.h"
+//#include "neat_types.h"
 
 int prog_main()
 {

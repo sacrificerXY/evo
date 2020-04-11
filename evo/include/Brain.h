@@ -1,30 +1,25 @@
 #pragma once
 
-#include <string>
 #include <vector>
 
-#include "Node.h"
 
-class Brain
-{
-public:
-    NodeIndex num_inputs;
-    NodeIndex num_outputs;
+struct Genome;
 
-    Brain(NodeIndex num_inputs, NodeIndex num_outputs, NodeIndex num_hidden);
-    void add_link(NodeIndex from, NodeIndex to, float weight);
-    std::vector<float> eval(std::vector<float> input);
-    std::string format() const;
-    void reset_values();
-
-private:
-    struct Link {
-        NodeIndex from;
-        NodeIndex to;
-        float weight;
-    };
-
-    int num_values;
-    std::vector<Link> links;
-    std::vector<float> past_values;
+struct BrainLink {
+    int from;
+    int to;
+    float weight;
 };
+
+struct Brain {
+    int num_inputs;
+    int num_outputs;
+    int num_values;
+    std::vector<BrainLink> links;
+    std::vector<float> old_values;
+};
+
+Brain create_brain(const Genome& g);
+std::vector<float> eval(Brain& b, std::vector<float> input);
+void reset(Brain& b);
+

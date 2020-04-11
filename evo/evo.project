@@ -6,9 +6,7 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
-    <File Name="src/GenomeLinkIdGenerator.cpp"/>
     <File Name="include/GenomeLinkIdGenerator.h"/>
-    <File Name="include/neat_types.h"/>
     <VirtualDirectory Name="doctest">
       <File Name="include/doctest/doctest.h"/>
     </VirtualDirectory>
@@ -16,11 +14,8 @@
     <VirtualDirectory Name="effolkronium">
       <File Name="include/effolkronium/random.hpp"/>
     </VirtualDirectory>
-    <File Name="include/Link.h"/>
-    <File Name="include/Node.h"/>
     <File Name="include/Brain.h"/>
     <File Name="include/Genome.h"/>
-    <File Name="include/Simulation.h"/>
     <VirtualDirectory Name="fmt">
       <File Name="include/fmt/ranges.h"/>
       <File Name="include/fmt/printf.h"/>
@@ -39,10 +34,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="src/neat_types.cpp"/>
+    <File Name="src/GenomeLinkIdGenerator.cpp"/>
     <File Name="src/Brain.cpp"/>
-    <File Name="src/Simulation.cpp"/>
-    <File Name="src/Link.cpp"/>
     <File Name="src/Genome.cpp"/>
     <VirtualDirectory Name="fmt">
       <File Name="src/fmt/os.cc"/>
