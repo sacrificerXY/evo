@@ -7,9 +7,9 @@
 #include <fmt/core.h>
 
 
-#include <effolkronium/random.hpp>
-// get base random alias which is auto seeded and has static API and internal state
-using Random = effolkronium::random_static;
+//#include <effolkronium/random.hpp>
+//// get base random alias which is auto seeded and has static API and internal state
+//using Random = effolkronium::random_static;
 
 #ifndef DOCTEST_CONFIG_DISABLE
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS // defined so the asserts are crazy fast - both for compilation and execution
@@ -18,14 +18,14 @@ using Random = effolkronium::random_static;
 #define DOCTEST_CONFIG_IMPLEMENT
 #include <doctest/doctest.h>
 
-//#include "Simulation.h"
-//struct Unit {
-//    Genome genome;
-//    Brain brain;
-//    float score = 0.f;
-//};
 
-//#include "neat_types.h"
+#include "GenomeLinkIdGenerator.h"
+#include "Genome.h"
+#include "Brain.h"
+#include "Random.h"
+
+
+//struct Unit
 
 int prog_main()
 {
@@ -36,6 +36,19 @@ int prog_main()
     //constexpr int rand_pops = 0.f;
     //constexpr int tests = 10;
     //Simulation sim(2, 1);
+    
+    auto rng = Random{};
+    auto gen = GenomeLinkIdGenerator{};
+    auto g = create_genome(5, 3, gen, rng);
+    add_hidden_node(g, gen, rng);
+    add_hidden_node(g, gen, rng);
+    add_hidden_node(g, gen, rng);
+    
+    fmt::print("{}\n", format(g));
+    for (int i = 0; i < 1000; ++i) {
+        g = mutate_add_link(g, gen, rng);
+        fmt::print("{}\n", format(g));
+    }
 
     //auto units = std::vector<Unit>();
     //for(int i = 0; i < pops + rand_pops; i++) {

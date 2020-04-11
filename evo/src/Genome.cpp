@@ -54,6 +54,34 @@ TEST_CASE("create_genome")
 }
 
 
+Genome copy(const Genome& g)
+{
+    return Genome {
+        .id             =  Id<Genome>::get(),
+        .num_inputs     = g.num_inputs,
+        .num_outputs    = g.num_outputs,
+        .num_hidden     = g.num_hidden,
+        .link_ids       = g.link_ids,
+        .links          = g.links
+    };
+}
+
+
+TEST_CASE("Genome copy")
+{
+    auto rng = Random{};
+    auto gen = GenomeLinkIdGenerator{};
+    auto g1 = create_genome(3, 2, gen, rng);
+    auto g2 = copy(g1);
+    CHECK(g1.id != g2.id);
+    CHECK(g1.num_inputs == g2.num_inputs);
+    CHECK(g1.num_outputs == g2.num_outputs);
+    CHECK(g1.num_hidden == g2.num_hidden);
+    CHECK(g1.link_ids == g2.link_ids);
+    CHECK(g1.links == g2.links);
+}
+
+
 int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id,
     const Random& rand)
 {
@@ -252,19 +280,45 @@ TEST_CASE("link query")
     }
 }
 
+#include <fmt/core.h>
+std::string format(const Genome& g)
+{
+    std::string out = fmt::format("---- Genome {} h={} ----\n", g.id, g.num_hidden);
+    for (int i = 0; i < g.link_ids.size(); i++) {
+        const auto id = g.link_ids[i];
+        const auto& link = g.links[i];
+        const auto e = link.enabled ? " " : "x";
+        fmt::format_to(std::back_inserter(out),
+            "  {} {:<3} {:>3} -> {:<3} {}\n",
+            e, id, link.from, link.to, link.weight
+        );
+    }
+    return out;
+}
 
 
-//#include <effolkronium/random.hpp>
-//// get base random alias which is auto seeded and has static API and internal state
-//using Random = effolkronium::random_static;
+Genome mutate_add_link(
+    const Genome& g,
+    const GenomeLinkIdGenerator& gen_id,
+    const Random& rand
+) {
+    auto new_g = copy(g);
+    
+    const auto from = rand.from(new_g);
+    const auto to = rand.to(new_g);
+    REQUIRE(link_is_valid(new_g, from, to));
+    
+    // only add if link does not exist
+    const auto id = gen_id(from, to);
+    if (!has_link(new_g, id)) {
+        add_link(new_g, id, GenomeLink{
+            .from = from,
+            .to = to,
+            .weight = rand.weight(),
+            .enabled = true
+        });
+    }
+    
+    return new_g;
+}
 
-
-//Genome mutate_add_link(const Genome& g,
-//                       const GenomeLinkIdGenerator& gen_id, 
-//                       const std::function<float(void)>& gen_weight)
-//{
-     //choose random link
-//    const auto from = [&](){
-//        
-//    }();
-//}

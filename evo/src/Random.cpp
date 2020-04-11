@@ -36,19 +36,12 @@ TEST_CASE("Random::from/to")
 {
     auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(1, 1, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    //add_hidden_node(g, gen, rand);
-    for (int i = 0; i < 1000; ++i) {
-        CHECK(rand.from(g) != 0);
-        rand.to(g);
+    auto g = create_genome(2, 2, gen, rand);
+    add_hidden_node(g, gen, rand);
+    add_hidden_node(g, gen, rand);
+    for (int i = 0; i < 100; ++i) {
+        const auto f = rand.from(g);
+        const auto t = rand.to(g);
+        CHECK(link_is_valid(g, f, t));
     }
 }
