@@ -7,6 +7,7 @@
 
 #include "Genome.h"
 #include "GenomeLinkIdGenerator.h"
+#include "Random.h"
 
 constexpr int BIAS_INDEX = 0;
 
@@ -40,8 +41,9 @@ Brain create_brain(const Genome& g)
 
 TEST_CASE("create_brain")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(2, 1, gen, [](){return 0;});
+    auto g = create_genome(2, 1, gen, rand);
     auto b = create_brain(g);
     CHECK(b.num_inputs == g.num_inputs);
     CHECK(b.num_outputs == g.num_outputs);
@@ -102,21 +104,21 @@ std::vector<float> eval(Brain& b, std::vector<float> input)
 
 TEST_CASE("eval brain")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(3, 2, gen, [](){return 0;});
+    auto g = create_genome(3, 2, gen, rand);
     {
-        constexpr auto ww = [] (float w) { return [w](){return w;};};
-        auto h = add_hidden_node(g, gen, ww(0));
+        auto h = add_hidden_node(g, gen, rand);
         add_link(g, gen(1, h), GenomeLink{
             .from = 1,
             .to = h,
-            .weight = 1,
+            .weight = rand.weight(),
             .enabled = true
         });
         add_link(g, gen(h, 4), GenomeLink{
             .from = h,
             .to = 4,
-            .weight = 1,
+            .weight = rand.weight(),
             .enabled = true
         });
         

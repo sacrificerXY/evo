@@ -6,6 +6,8 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="src/Random.cpp"/>
+    <File Name="include/Random.h"/>
     <File Name="include/GenomeLinkIdGenerator.h"/>
     <VirtualDirectory Name="doctest">
       <File Name="include/doctest/doctest.h"/>

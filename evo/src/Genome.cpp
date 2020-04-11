@@ -6,12 +6,13 @@
 
 #include "Id.h"
 #include "GenomeLinkIdGenerator.h"
+#include "Random.h"
 
 constexpr int BIAS_INDEX = 0;
 
 Genome create_genome(const int num_inputs_, const int num_outputs_, 
     const GenomeLinkIdGenerator& gen_id,
-    const std::function<float(void)>& gen_weight = [](){ return 0.0f; })
+    const Random& rand)
 {
     REQUIRE(num_inputs_ > 0);
     REQUIRE(num_outputs_ > 0);
@@ -29,7 +30,7 @@ Genome create_genome(const int num_inputs_, const int num_outputs_,
             GenomeLink{
                 .from = BIAS_INDEX,
                 .to = i,
-                .weight = gen_weight(),//rand
+                .weight = rand.weight(),
                 .enabled = true
         });
     }
@@ -39,8 +40,9 @@ Genome create_genome(const int num_inputs_, const int num_outputs_,
 
 TEST_CASE("create_genome")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(3, 2, gen);
+    auto g = create_genome(3, 2, gen, rand);
     
     CHECK(g.num_inputs == 3 + 1); // bias
     CHECK(g.num_outputs == 2);
@@ -53,14 +55,14 @@ TEST_CASE("create_genome")
 
 
 int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id,
-    const std::function<float(void)>& gen_weight = [](){ return 0.0f; })
+    const Random& rand)
 {
     int i = g.num_inputs + g.num_outputs + g.num_hidden++;
     add_link(g, gen_id(BIAS_INDEX, i),
         GenomeLink{
             .from = BIAS_INDEX,
             .to = i,
-            .weight = gen_weight(),
+            .weight = rand.weight(),
             .enabled = true
     });
     return i;
@@ -68,9 +70,10 @@ int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id,
 
 TEST_CASE("add_hidden_node")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(1, 1, gen);
-    auto index = add_hidden_node(g, gen);
+    auto g = create_genome(1, 1, gen, rand);
+    auto index = add_hidden_node(g, gen, rand);
     CHECK(g.num_hidden == 1);
     CHECK(index == 3);
     CHECK(has_link(g, gen(BIAS_INDEX, index)));
@@ -96,8 +99,9 @@ void add_link(Genome& g, int id, const GenomeLink& link)
 
 TEST_CASE("add_link")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(3, 2, gen);
+    auto g = create_genome(3, 2, gen, rand);
     
     auto id = gen(1, 4);
     CHECK_FALSE(has_link(g, id));
@@ -133,11 +137,12 @@ bool node_is_valid(const Genome& g, int i)
 }
 TEST_CASE("node query")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(3, 2, gen);
-    add_hidden_node(g, gen); // 6
-    add_hidden_node(g, gen); // 7
-    add_hidden_node(g, gen); // 8
+    auto g = create_genome(3, 2, gen, rand);
+    add_hidden_node(g, gen, rand); // 6
+    add_hidden_node(g, gen, rand); // 7
+    add_hidden_node(g, gen, rand); // 8
     
     SUBCASE("node_is_input")
     {
@@ -213,12 +218,13 @@ bool has_link(const Genome& g, int id)
 
 TEST_CASE("link query")
 {
+    auto rand = Random{};
     auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(1, 1, gen);
+    auto g = create_genome(1, 1, gen, rand);
     auto i = 1;
     auto o = 2;
-    auto h1 = add_hidden_node(g, gen);
-    auto h2 = add_hidden_node(g, gen);
+    auto h1 = add_hidden_node(g, gen, rand);
+    auto h2 = add_hidden_node(g, gen, rand);
     SUBCASE("link_is_valid")
     {
         CHECK(link_is_valid(g, i, o));
@@ -246,3 +252,19 @@ TEST_CASE("link query")
     }
 }
 
+
+
+//#include <effolkronium/random.hpp>
+//// get base random alias which is auto seeded and has static API and internal state
+//using Random = effolkronium::random_static;
+
+
+//Genome mutate_add_link(const Genome& g,
+//                       const GenomeLinkIdGenerator& gen_id, 
+//                       const std::function<float(void)>& gen_weight)
+//{
+     //choose random link
+//    const auto from = [&](){
+//        
+//    }();
+//}
