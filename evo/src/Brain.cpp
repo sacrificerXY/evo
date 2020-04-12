@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <unordered_map>
+#include <set>
 
 #include <doctest/doctest.h>
 
@@ -42,6 +44,7 @@ Brain create_brain(const Genome& g)
 TEST_CASE("create_brain")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(2, 1, gen, rand);
     auto b = create_brain(g);
@@ -105,6 +108,7 @@ std::vector<float> eval(Brain& b, std::vector<float> input)
 TEST_CASE("eval brain")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen, rand);
     {
@@ -136,4 +140,72 @@ TEST_CASE("eval brain")
     for (const auto& val : b.old_values) {
         fmt::print("  {}\n", val );
     }
+}
+
+
+#include <fmt/core.h>
+#include <fmt/ranges.h>
+void prune_useless_links(Brain& b)
+{
+    std::unordered_map<int, std::vector<int>> incoming_links;
+    for (const auto& l : b.links) {
+        incoming_links[l.to].push_back(l.from);
+    }
+    
+    // outgoing
+    std::set<int> useful_nodes;
+    {
+        std::vector<int> stack;
+        for (int i = b.num_inputs; i < b.num_inputs + b.num_outputs; ++i) {
+            if (incoming_links.contains(i)) {
+                //fmt::print("add to stack {}\n", i);
+                stack.push_back(i);
+            }
+        }
+        
+        while (!stack.empty()) {
+            auto curr = stack.back();
+            stack.pop_back();
+            //fmt::print("checking... {}\n", curr);
+            //fmt::print("in  = {{{}}}\n", fmt::join(useful_nodes, ", "));
+            //fmt::print("stk = {{{}}}\n", fmt::join(stack, ", "));
+            //fmt::print("    add to in {}\n", curr);
+            useful_nodes.insert(curr);
+            if (incoming_links.contains(curr)) {
+                for (auto n : incoming_links[curr]) {
+                    if (useful_nodes.contains(n)) continue;
+                    if (std::find(stack.begin(), stack.end(), n) != stack.end()) continue;
+                    //fmt::print("    add to stack {}\n", n);
+                    stack.push_back(n);
+                }
+            }
+        }
+    }
+    
+    fmt::print("---- useful_nodes ----\n");
+    for (auto i : useful_nodes) {
+        fmt::print("    {}\n", i);
+    }
+    fmt::print("\n");
+    
+    const auto link_is_useless = [&useful_nodes](const auto& link) {
+        return !useful_nodes.contains(link.from) || !useful_nodes.contains(link.to);
+    };
+    auto it = std::remove_if(b.links.begin(), b.links.end(), link_is_useless);
+    b.links.erase(it, b.links.end());
+    
+}
+
+std::string format_links(const Brain& b)
+{
+    std::string out = "---- BrainLinks ----\n";
+    for (const auto& link : b.links) {
+        //if (link.from == 0) continue;
+        fmt::format_to(std::back_inserter(out),
+            //"  {:>3} -> {:<3} {}\n",
+            "  {:>3} -> {:<3}\n",
+            link.from, link.to, link.weight
+        );
+    }
+    return out;
 }

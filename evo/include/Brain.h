@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 
 struct Genome;
@@ -22,4 +23,7 @@ struct Brain {
 Brain create_brain(const Genome& g);
 std::vector<float> eval(Brain& b, std::vector<float> input);
 void reset(Brain& b);
+void prune_useless_links(Brain& b);
+
+std::string format_links(const Brain& b);
 

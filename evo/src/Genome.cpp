@@ -41,6 +41,7 @@ Genome create_genome(const int num_inputs_, const int num_outputs_,
 TEST_CASE("create_genome")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen, rand);
     
@@ -99,6 +100,7 @@ int add_hidden_node(Genome& g, const GenomeLinkIdGenerator& gen_id,
 TEST_CASE("add_hidden_node")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(1, 1, gen, rand);
     auto index = add_hidden_node(g, gen, rand);
@@ -128,6 +130,7 @@ void add_link(Genome& g, int id, const GenomeLink& link)
 TEST_CASE("add_link")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen, rand);
     
@@ -143,6 +146,36 @@ TEST_CASE("add_link")
 }
 
 
+void disable_link(Genome& g, int id)
+{
+    REQUIRE(has_link(g, id));
+    const auto link_it = std::lower_bound(g.link_ids.begin(), g.link_ids.end(), id);
+    REQUIRE(*link_it == id);
+    const auto i = std::distance(g.link_ids.begin(), link_it);
+    g.links[i].enabled = false;
+}
+
+TEST_CASE("disable_link")
+{
+    auto rand = Random{};
+    
+    auto gen = GenomeLinkIdGenerator{};
+    auto g = create_genome(3, 2, gen, rand);
+    
+    REQUIRE(g.links.front().enabled);
+    disable_link(g, g.link_ids.front());
+    REQUIRE_FALSE(g.links.front().enabled);
+}
+
+
+float get_link_weight(const Genome& g, int id)
+{
+    REQUIRE(has_link(g, id));
+    const auto link_it = std::lower_bound(g.link_ids.begin(), g.link_ids.end(), id);
+    REQUIRE(*link_it == id);
+    const auto i = std::distance(g.link_ids.begin(), link_it);
+    return g.links[i].weight;
+}
 
 bool node_is_input(const Genome& g, int i)
 {
@@ -166,6 +199,7 @@ bool node_is_valid(const Genome& g, int i)
 TEST_CASE("node query")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(3, 2, gen, rand);
     add_hidden_node(g, gen, rand); // 6
@@ -244,9 +278,19 @@ bool has_link(const Genome& g, int id)
     return std::binary_search(g.link_ids.begin(), g.link_ids.end(), id);
 }
 
+
+bool link_is_enabled(const Genome& g, int id)
+{
+    REQUIRE(has_link(g, id));
+    const auto link_it = std::lower_bound(g.link_ids.begin(), g.link_ids.end(), id);
+    REQUIRE(*link_it == id);
+    const auto i = std::distance(g.link_ids.begin(), link_it);
+    return g.links[i].enabled;
+}
 TEST_CASE("link query")
 {
     auto rand = Random{};
+    
     auto gen = GenomeLinkIdGenerator{};
     auto g = create_genome(1, 1, gen, rand);
     auto i = 1;
@@ -317,6 +361,51 @@ Genome mutate_add_link(
             .weight = rand.weight(),
             .enabled = true
         });
+    }
+    
+    return new_g;
+}
+
+
+Genome mutate_split_link(
+    const Genome& g,
+    const GenomeLinkIdGenerator& gen_id,
+    const Random& rand
+) {
+    auto new_g = copy(g);
+    
+    // choose random link to split
+    const auto from = rand.from(new_g);
+    const auto to = rand.to(new_g);
+    REQUIRE(link_is_valid(new_g, from, to));
+    
+    // only split if link exists
+    const auto id = gen_id(from, to);
+    if (has_link(new_g, id)) {
+        
+        // inherit enabled status of old link
+        const auto enabled = link_is_enabled(new_g, id);
+        const auto weight = get_link_weight(new_g, id);
+        
+        const auto h = add_hidden_node(new_g, gen_id, rand);
+        
+        
+        // from to hidden
+        add_link(new_g, gen_id(from, h), GenomeLink{
+            .from = from,
+            .to = h,
+            .weight = 1.0f,
+            .enabled = enabled
+        });
+        // hidden to to
+        add_link(new_g, gen_id(h, to), GenomeLink{
+            .from = h,
+            .to = to,
+            .weight = weight,
+            .enabled = enabled
+        });
+        
+        disable_link(new_g, id);
     }
     
     return new_g;
