@@ -333,8 +333,10 @@ std::string format(const Genome& g)
         const auto& link = g.links[i];
         const auto e = link.enabled ? " " : "x";
         fmt::format_to(std::back_inserter(out),
-            "  {} {:<3} {:>3} -> {:<3} {}\n",
-            e, id, link.from, link.to, link.weight
+            "{} {} {} {} {}\n",
+            id, link.from, link.to, link.weight, int(link.enabled)
+            //"  {} {:<3} {:>3} -> {:<3} {}\n",
+            //e, id, link.from, link.to, link.weight
         );
     }
     return out;

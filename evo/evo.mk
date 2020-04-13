@@ -14,7 +14,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Kyle
-Date                   :=12/04/2020
+Date                   :=13/04/2020
 CodeLitePath           :=G:/CodeLite
 LinkerName             :=G:/msys64/mingw64/bin/g++.exe
 SharedObjectLinkerName :=G:/msys64/mingw64/bin/g++.exe -shared -fPIC
@@ -52,7 +52,7 @@ LibPath                := $(LibraryPathSwitch).
 AR       := G:/msys64/mingw64/bin/ar.exe rcu
 CXX      := G:/msys64/mingw64/bin/g++.exe
 CC       := G:/msys64/mingw64/bin/gcc.exe
-CXXFLAGS := -std=c++2a -Werror=return-type  -g -O0 -Wall $(Preprocessors)
+CXXFLAGS := -std=c++2a -Werror=return-type -fconcepts  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := G:/msys64/mingw64/bin/as.exe

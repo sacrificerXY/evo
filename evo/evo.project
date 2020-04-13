@@ -6,6 +6,7 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="include/Link.h"/>
     <File Name="src/Random.cpp"/>
     <File Name="include/Random.h"/>
     <File Name="include/GenomeLinkIdGenerator.h"/>
@@ -47,7 +48,7 @@
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
-      <Compiler Options="-std=c++2a;-Werror=return-type;" C_Options="" Assembler="">
+      <Compiler Options="-std=c++2a;-Werror=return-type;-fconcepts;" C_Options="" Assembler="">
         <IncludePath Value="."/>
         <IncludePath Value="include"/>
       </Compiler>

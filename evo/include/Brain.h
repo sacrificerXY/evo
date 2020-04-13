@@ -18,6 +18,8 @@ struct Brain {
     int num_values;
     std::vector<BrainLink> links;
     std::vector<float> old_values;
+    
+    int genome_id;
 };
 
 Brain create_brain(const Genome& g);

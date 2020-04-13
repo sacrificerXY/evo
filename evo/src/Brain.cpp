@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_map>
+#include <map>
 #include <set>
 
 #include <doctest/doctest.h>
@@ -10,6 +11,8 @@
 #include "Genome.h"
 #include "GenomeLinkIdGenerator.h"
 #include "Random.h"
+
+#include "Link.h"
 
 constexpr int BIAS_INDEX = 0;
 
@@ -64,6 +67,7 @@ void reset(Brain& b)
 }
 
 
+// TODO eval(n_in, n_out, BrainLinks, input_vec)
 std::vector<float> eval(Brain& b, std::vector<float> input)
 {
     REQUIRE(input.size() == b.num_inputs - 1); // bias
@@ -147,46 +151,14 @@ TEST_CASE("eval brain")
 #include <fmt/ranges.h>
 void prune_useless_links(Brain& b)
 {
-    std::unordered_map<int, std::vector<int>> incoming_links;
-    for (const auto& l : b.links) {
-        incoming_links[l.to].push_back(l.from);
-    }
-    
-    // outgoing
-    std::set<int> useful_nodes;
-    {
-        std::vector<int> stack;
-        for (int i = b.num_inputs; i < b.num_inputs + b.num_outputs; ++i) {
-            if (incoming_links.contains(i)) {
-                //fmt::print("add to stack {}\n", i);
-                stack.push_back(i);
-            }
-        }
-        
-        while (!stack.empty()) {
-            auto curr = stack.back();
-            stack.pop_back();
-            //fmt::print("checking... {}\n", curr);
-            //fmt::print("in  = {{{}}}\n", fmt::join(useful_nodes, ", "));
-            //fmt::print("stk = {{{}}}\n", fmt::join(stack, ", "));
-            //fmt::print("    add to in {}\n", curr);
-            useful_nodes.insert(curr);
-            if (incoming_links.contains(curr)) {
-                for (auto n : incoming_links[curr]) {
-                    if (useful_nodes.contains(n)) continue;
-                    if (std::find(stack.begin(), stack.end(), n) != stack.end()) continue;
-                    //fmt::print("    add to stack {}\n", n);
-                    stack.push_back(n);
-                }
-            }
-        }
-    }
+    auto useful_nodes = get_useful_nodes(b.num_inputs, b.num_outputs, b.links);
     
     fmt::print("---- useful_nodes ----\n");
-    for (auto i : useful_nodes) {
+    for (auto i : std::set(useful_nodes.begin(), useful_nodes.end())) {
         fmt::print("    {}\n", i);
     }
     fmt::print("\n");
+    
     
     const auto link_is_useless = [&useful_nodes](const auto& link) {
         return !useful_nodes.contains(link.from) || !useful_nodes.contains(link.to);
@@ -194,6 +166,17 @@ void prune_useless_links(Brain& b)
     auto it = std::remove_if(b.links.begin(), b.links.end(), link_is_useless);
     b.links.erase(it, b.links.end());
     
+    std::map<int, int> index_map;
+    for (int i = 0; i < useful_nodes.size(); ++i) {
+        auto it = std::next(useful_nodes.begin(), i);
+        index_map[*it] = i;
+    }
+    std::map im(index_map.begin(), index_map.end());
+    
+    fmt::print("\n---- index map ----\n");
+    for (auto [n, i] : im) {
+        fmt::print("{} -> {}\n", n, i);
+    }
 }
 
 std::string format_links(const Brain& b)
@@ -204,6 +187,7 @@ std::string format_links(const Brain& b)
         fmt::format_to(std::back_inserter(out),
             //"  {:>3} -> {:<3} {}\n",
             "  {:>3} -> {:<3}\n",
+            //"{} {} {}\n",
             link.from, link.to, link.weight
         );
     }

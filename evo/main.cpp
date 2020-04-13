@@ -51,7 +51,7 @@ int prog_main()
     //}
     
     fmt::print("{}\n", format(g));
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 70; ++i) {
         if (r::get<bool>(0.8)) {
             fmt::print("  split_link\n{}\n", format(g));
             g = mutate_split_link(g, gen, rng);
