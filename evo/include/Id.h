@@ -4,11 +4,14 @@ template <typename T>
 class Id
 {
 public:
-    using Type = int;
-    static Id::Type get()
+    int get()
     {
         return count++;
     }
+    int test() const
+    {
+        return count;
+    }
 private:
-    inline static Id::Type count = 0; 
+    int count = 0; 
 };

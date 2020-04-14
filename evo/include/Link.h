@@ -1,5 +1,6 @@
 #pragma once
 
+#include <numeric>
 #include <set>
 #include <vector>
 
@@ -16,22 +17,22 @@ auto get_useful_nodes(int num_inputs, int num_outputs, const std::vector<cLink>&
         reverse_adjacency_list[l.to].push_back(l.from);
     }
     
+    // do depth first search starting from output node
+    // all nodes visited by dfs is then considered useful
     std::set<int> useful_nodes;
     {
-        std::vector<int> stack;
-        for (int i = num_inputs; i < num_inputs + num_outputs; ++i) {
-            stack.push_back(i);
-        }
-        
+        // add output indices at the start
+        std::vector<int> stack(num_outputs);
+        std::iota(stack.begin(), stack.end(), num_inputs); // generates [num_inputs to num_inputs+num_outputs]
+  
+      
         while (!stack.empty()) {
             auto curr = stack.back();
             stack.pop_back();
-            //fmt::print("checking... {}\n", curr);
-            //fmt::print("in  = {{{}}}\n", fmt::join(useful_nodes, ", "));
-            //fmt::print("stk = {{{}}}\n", fmt::join(stack, ", "));
-            //fmt::print("    add to in {}\n", curr);
             useful_nodes.insert(curr);
-            for (auto n : reverse_adjacency_list[curr]) {
+            
+            const auto& next_nodes = reverse_adjacency_list[curr];
+            for (auto n : next_nodes) {
                 if (useful_nodes.contains(n)) continue;
                 if (std::find(stack.begin(), stack.end(), n) != stack.end()) continue;
                 //fmt::print("    add to stack {}\n", n);
@@ -40,7 +41,8 @@ auto get_useful_nodes(int num_inputs, int num_outputs, const std::vector<cLink>&
         }
     }
     
-    // make sure to add input and output nodes no matter what
+    // sometimes not all input indices are connected to output
+    // still, make sure to add input indices no matter what
     for (int i = 0; i < num_inputs + num_outputs; ++i) {
         useful_nodes.insert(i);
     }

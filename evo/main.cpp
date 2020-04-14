@@ -19,7 +19,7 @@
 #include <doctest/doctest.h>
 
 
-#include "GenomeLinkIdGenerator.h"
+#include "LinkIdGenerator.h"
 #include "Genome.h"
 #include "Brain.h"
 #include "Random.h"
@@ -29,44 +29,47 @@
 
 int prog_main()
 {
-    using r = effolkronium::random_static;
-    //create_genome(1, 1);
-    //constexpr int epochs = 1000;
-    //constexpr int pops = 200;
-    //constexpr int top = pops / 2;
-    //constexpr int rand_pops = 0.f;
-    //constexpr int tests = 10;
-    //Simulation sim(2, 1);
-    
-    auto rng = Random{};
-    auto gen = GenomeLinkIdGenerator{};
-    auto g = create_genome(2, 2, gen, rng);
-    //add_hidden_node(g, gen, rng);
-    //add_hidden_node(g, gen, rng);
-    //add_hidden_node(g, gen, rng);
-    
-    fmt::print("{}\n", format(g));
-    
-    //for (int i = 0; i < 10; ++i) {
+    //using r = effolkronium::random_static;
+    ////create_genome(1, 1);
+    ////constexpr int epochs = 1000;
+    ////constexpr int pops = 200;
+    ////constexpr int top = pops / 2;
+    ////constexpr int rand_pops = 0.f;
+    ////constexpr int tests = 10;
+    ////Simulation sim(2, 1);
+    //
+    //auto rng = Random{};
+    //auto gen = GenomeLinkIdGenerator{};
+    //auto g = create_genome(3, 2, gen, rng);
+    ////add_hidden_node(g, gen, rng);
+    ////add_hidden_node(g, gen, rng);
+    ////add_hidden_node(g, gen, rng);
+    //
+    //fmt::print("{}\n", format(g));
+    //
+    ////for (int i = 0; i < 10; ++i) {
+    ////}
+    //
+    //fmt::print("{}\n", format(g));
+    //for (int i = 0; i < 200; ++i) {
+    //    if (r::get<bool>(0.5)) {
+    //        fmt::print("  split_link\n{}\n", format(g));
+    //        g = mutate_split_link(g, gen, rng);
+    //    } else {
+    //        g = mutate_add_link(g, gen, rng);
+    //        fmt::print("  add link\n{}\n", format(g));
+    //    }
     //}
-    
-    fmt::print("{}\n", format(g));
-    for (int i = 0; i < 70; ++i) {
-        if (r::get<bool>(0.8)) {
-            fmt::print("  split_link\n{}\n", format(g));
-            g = mutate_split_link(g, gen, rng);
-        } else {
-            g = mutate_add_link(g, gen, rng);
-            fmt::print("  add link\n{}\n", format(g));
-        }
-    }
-    
-    auto b = create_brain(g);
-    fmt::print("{}\n", format_links(b));
-    prune_useless_links(b);
+    //
+    //auto b = create_brain(g);
+    //fmt::print("{}\n", format_links(b));
     
     
-    fmt::print("---- after prune ----\n{}\n", format_links(b));
+    
+    //prune_useless_links(b);
+    
+    
+    //fmt::print("---- after prune ----\n{}\n", format_links(b));
 
     //auto units = std::vector<Unit>();
     //for(int i = 0; i < pops + rand_pops; i++) {
