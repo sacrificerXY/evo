@@ -14,7 +14,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Kyle
-Date                   :=14/04/2020
+Date                   :=18/04/2020
 CodeLitePath           :=G:/CodeLite
 LinkerName             :=G:/msys64/mingw64/bin/g++.exe
 SharedObjectLinkerName :=G:/msys64/mingw64/bin/g++.exe -shared -fPIC
@@ -62,7 +62,7 @@ AS       := G:/msys64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=G:\CodeLite
-Objects0=../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Random.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
+Objects0=../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_fmt_os.cc$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Random.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Brain.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/src_Genome.cpp$(ObjectSuffix) ../build-$(ConfigurationName)/evo/main.cpp$(ObjectSuffix) 
 
 
 
@@ -93,14 +93,6 @@ PreBuild:
 ##
 ## Objects
 ##
-../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix): src/LinkIdGenerator.cpp ../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/LinkIdGenerator.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_LinkIdGenerator.cpp$(ObjectSuffix) $(IncludePath)
-../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix): src/LinkIdGenerator.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix) -MM src/LinkIdGenerator.cpp
-
-../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(PreprocessSuffix): src/LinkIdGenerator.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(PreprocessSuffix) src/LinkIdGenerator.cpp
-
 ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(ObjectSuffix): src/fmt/format.cc ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/fmt/format.cc" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_fmt_format.cc$(ObjectSuffix) $(IncludePath)
 ../build-$(ConfigurationName)/evo/src_fmt_format.cc$(DependSuffix): src/fmt/format.cc
@@ -124,6 +116,30 @@ PreBuild:
 
 ../build-$(ConfigurationName)/evo/src_Random.cpp$(PreprocessSuffix): src/Random.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_Random.cpp$(PreprocessSuffix) src/Random.cpp
+
+../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix): src/LinkIdGenerator.cpp ../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/LinkIdGenerator.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_LinkIdGenerator.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix): src/LinkIdGenerator.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(DependSuffix) -MM src/LinkIdGenerator.cpp
+
+../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(PreprocessSuffix): src/LinkIdGenerator.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_LinkIdGenerator.cpp$(PreprocessSuffix) src/LinkIdGenerator.cpp
+
+../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(ObjectSuffix): src/GenomeLink.cpp ../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/GenomeLink.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_GenomeLink.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(DependSuffix): src/GenomeLink.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(DependSuffix) -MM src/GenomeLink.cpp
+
+../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(PreprocessSuffix): src/GenomeLink.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_GenomeLink.cpp$(PreprocessSuffix) src/GenomeLink.cpp
+
+../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(ObjectSuffix): src/tests/TestGenomeLinks.cpp ../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/tests/TestGenomeLinks.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_tests_TestGenomeLinks.cpp$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(DependSuffix): src/tests/TestGenomeLinks.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(ObjectSuffix) -MF../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(DependSuffix) -MM src/tests/TestGenomeLinks.cpp
+
+../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(PreprocessSuffix): src/tests/TestGenomeLinks.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/evo/src_tests_TestGenomeLinks.cpp$(PreprocessSuffix) src/tests/TestGenomeLinks.cpp
 
 ../build-$(ConfigurationName)/evo/src_Brain.cpp$(ObjectSuffix): src/Brain.cpp ../build-$(ConfigurationName)/evo/src_Brain.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "G:/projects/c++/workspace/evo/evo/src/Brain.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Brain.cpp$(ObjectSuffix) $(IncludePath)

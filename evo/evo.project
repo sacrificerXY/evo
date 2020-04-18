@@ -6,6 +6,8 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="src/GenomeLink.cpp"/>
+    <File Name="include/GenomeLink.h"/>
     <File Name="include/LinkIdGenerator.h"/>
     <File Name="include/Link.h"/>
     <File Name="src/Random.cpp"/>
@@ -37,6 +39,9 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <VirtualDirectory Name="tests">
+      <File Name="src/tests/TestGenomeLinks.cpp"/>
+    </VirtualDirectory>
     <File Name="src/LinkIdGenerator.cpp"/>
     <File Name="src/Brain.cpp"/>
     <File Name="src/Genome.cpp"/>
